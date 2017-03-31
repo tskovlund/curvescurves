@@ -238,6 +238,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/java,macos,windows,intellij,androidstudio
-.gitignore
-.idea/
-curvescurves.iml
+.idea
