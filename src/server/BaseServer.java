@@ -20,6 +20,8 @@ public class BaseServer {
         this.running = true;
     }
 
+
+    //TODO listen for new clients
     private void start() {
         registerOnPort();
 
