@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
  */
 public class GameConstants {
     public static final int PLAYER_DOT_DIAMETER = 10;
+    public static final int TURN_SPEED = 1;
     public static int GAME_WIDTH = 1200;
     public static int GAME_HEIGHT = 750;
     public static final Color BACKGROUND_COLOR = Color.LIGHTSALMON;

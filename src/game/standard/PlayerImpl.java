@@ -12,12 +12,14 @@ public class PlayerImpl implements Player {
     private int score;
     private Position position;
     private Color color;
+    private int angle;
 
-    public PlayerImpl(String name, int score, Position position, Color color) {
+    public PlayerImpl(String name, int score, Position position, Color color, int angle) {
         this.name = name;
         this.score = score;
         this.position = position;
         this.color = color;
+        this.angle = angle;
     }
 
     @Override
@@ -36,7 +38,22 @@ public class PlayerImpl implements Player {
     }
 
     @Override
+    public void updatePosition(int deltaX, int deltaY) {
+        position = new PositionImpl(position.getX() + deltaX, position.getY() + deltaY);
+    }
+
+    @Override
     public Color getColor() {
         return color;
+    }
+
+    @Override
+    public int getAngle() {
+        return angle;
+    }
+
+    @Override
+    public void turn(int degrees) {
+        angle = (angle + degrees) % 360;
     }
 }

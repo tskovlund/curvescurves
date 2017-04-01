@@ -104,10 +104,10 @@ public class CanvasImpl extends Application implements Canvas {
                 }
                 List<Player> players = new ArrayList<>();
 
-                players.add(new PlayerImpl("Player 1", i + random.nextInt(5), pos1, Color.AQUA));
-                players.add(new PlayerImpl("Player 2 WITH CRAZILY LONG NAME LIKE REALLY CRAZY!", i + random.nextInt(5), pos2, Color.BLUEVIOLET));
-                players.add(new PlayerImpl("Player 3", i + random.nextInt(5), pos3, Color.RED));
-                players.add(new PlayerImpl("Player 4", i + random.nextInt(5), pos4, Color.PURPLE));
+                players.add(new PlayerImpl("Player 1", i + random.nextInt(5), pos1, Color.AQUA, 0));
+                players.add(new PlayerImpl("Player 2 WITH CRAZILY LONG NAME LIKE REALLY CRAZY!", i + random.nextInt(5), pos2, Color.BLUEVIOLET, 0));
+                players.add(new PlayerImpl("Player 3", i + random.nextInt(5), pos3, Color.RED, 0));
+                players.add(new PlayerImpl("Player 4", i + random.nextInt(5), pos4, Color.PURPLE, 0));
 
                 update(players);
 

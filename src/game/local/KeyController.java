@@ -40,10 +40,7 @@ public class KeyController implements Controller, KeyListener {
             case KeyEvent.VK_RIGHT: right = true; break;
         }
 
-        if (left && right) { move(Direction.FORWARD); }
-        else if (left) { move(Direction.LEFT); }
-        else if (right) { move(Direction.RIGHT); }
-        else { move(Direction.FORWARD); }
+        updateDirection();
     }
 
     @Override
@@ -54,5 +51,14 @@ public class KeyController implements Controller, KeyListener {
             case KeyEvent.VK_LEFT: left = false;
             case KeyEvent.VK_RIGHT: right = false; break;
         }
+
+        updateDirection();
+    }
+
+    private void updateDirection() {
+        if (left && right) { move(Direction.FORWARD); }
+        else if (left) { move(Direction.LEFT); }
+        else if (right) { move(Direction.RIGHT); }
+        else { move(Direction.FORWARD); }
     }
 }
