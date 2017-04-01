@@ -16,7 +16,6 @@ public class WebsocketHandler {
     public static final int MASK_SIZE = 4;
     private Socket socket;
 
-
     public WebsocketHandler(Socket socket) {
         this.socket = socket;
     }
@@ -57,7 +56,7 @@ public class WebsocketHandler {
         return true;
     }
 
-    public String recieveMessage() throws IOException {
+    public String receiveMessage() throws IOException {
         byte[] buf = readBytes(2);
         int opcode = buf[0] & 0x0F;
         if (opcode == 8) {
