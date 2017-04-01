@@ -1,6 +1,6 @@
 window.onload = function () {
-    ip = '10.37.0.35';
-    port = '80';
+    let ip = '10.37.0.64';
+    let port = '80';
 
     socket = new WebSocket('ws://'+ip+':'+port);
     
@@ -10,24 +10,36 @@ window.onload = function () {
     });
 
     socket.addEventListener('open', function (event) {
-	console.log("Socket Open");
+	alert("Connection Established");
 	leftButton = document.getElementById("left");	
 	rightButton = document.getElementById("right");
-	setUpListeners();
+	if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+	    setUpListeners('touchend','touchstart');
+	} else {
+	    setUpListeners('mouseup','mousedown');
+	}
     });
+<<<<<<< HEAD
+
+    socket.addEventListener('error', function(error) {
+	alert("Connection Failed");
+    });
+}			   
+=======
 };
+>>>>>>> ee7712e55651bf2fdaeed326070b3a96cfd63a24
 
 var socket;
 var leftButton;
 var rightButton;
-var leftDown = true;
-var rightDown =false;
+var leftDown = false;
+var rightDown = false;
 var left = "left";
 var right = "right";
 var forward = "forward";
 
-function setUpListeners() {
-    leftButton.addEventListener('mousedown',function(event) {
+function setUpListeners(up,down) {    
+    leftButton.addEventListener(down,function(event) {
 	leftDown = true;
 
 	if (rightDown) {
@@ -37,7 +49,7 @@ function setUpListeners() {
 	}
     });
 
-    rightButton.addEventListener('mousedown',function(event) {
+    rightButton.addEventListener(down,function(event) {
 	rightDown = true;
 
 	if (leftDown) {
@@ -47,7 +59,7 @@ function setUpListeners() {
 	}
     });
 
-    leftButton.addEventListener('mouseup',function(event) {
+    leftButton.addEventListener(up,function(event) {
 	leftDown = false;
 
 	if (rightDown) {
@@ -57,7 +69,7 @@ function setUpListeners() {
 	}
     });
 
-    rightButton.addEventListener('mouseup',function(event) {
+    rightButton.addEventListener(up,function(event) {
 	rightDown = false;
 
 	if (leftDown) {
