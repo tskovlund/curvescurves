@@ -1,5 +1,6 @@
 package game.standard;
 
+import driver.Driver;
 import game.framework.Canvas;
 import game.framework.Player;
 import game.framework.Position;
@@ -98,7 +99,9 @@ public class CanvasImpl extends Application implements Canvas {
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.setFullScreen(true);
+
         primaryStage.show();
+        Driver.main(null);
 
         /**
         GameImpl game = new GameImpl(this);

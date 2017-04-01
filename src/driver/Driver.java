@@ -30,7 +30,7 @@ public class Driver {
         BaseServer server = new BaseServer(new ServerToGameAdapter(), game);
         server.start();
 
-        while (game.getPlayerMap().size() <= 3) {
+        while (game.getPlayerMap().size() < 3) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -38,7 +38,8 @@ public class Driver {
             }
         }
         System.out.println("LET THE GAMES BEGIN");
-        Thread t = new Thread(game);
-        t.start();
+
+        game.start();
+
     }
 }
