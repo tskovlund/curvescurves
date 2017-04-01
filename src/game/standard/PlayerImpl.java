@@ -38,7 +38,7 @@ public class PlayerImpl implements Player {
     }
 
     @Override
-    public void updatePosition(int deltaX, int deltaY) {
+    public void updatePosition(double deltaX, double deltaY) {
         position = new PositionImpl(position.getX() + deltaX, position.getY() + deltaY);
     }
 
@@ -53,8 +53,8 @@ public class PlayerImpl implements Player {
     }
 
     @Override
-    public void turn(int degrees) {
-        angle = (angle + degrees) % 360;
-        if (angle == -1) angle = 359;
+    public void turn(double degrees) {
+        angle = (angle + (int) degrees) % 360;
+        if (angle < 0) angle = 360 + angle;
     }
 }

@@ -6,21 +6,21 @@ import game.framework.Position;
  * Created by fuve on 01/04/2017.
  */
 public class PositionImpl implements Position {
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
-    public PositionImpl(int x, int y) {
+    public PositionImpl(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
     @Override
-    public int getX() {
+    public double getX() {
         return x;
     }
 
     @Override
-    public int getY() {
+    public double getY() {
         return y;
     }
 

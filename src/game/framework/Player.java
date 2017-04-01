@@ -9,8 +9,8 @@ public interface Player {
     String getName();
     int getScore();
     Position getPosition();
-    void updatePosition(int deltaX, int deltaY);
+    void updatePosition(double deltaX, double deltaY);
     Color getColor();
     int getAngle();
-    void turn(int degrees);
+    void turn(double degrees);
 }

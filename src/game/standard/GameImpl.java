@@ -75,7 +75,7 @@ public class GameImpl implements Game, Runnable {
             }
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -86,23 +86,18 @@ public class GameImpl implements Game, Runnable {
 
     private void update() {
         for (Player p : getPlayers()) {
-            int deltaX = 0;
-            int deltaY = 0;
-
             int a = p.getAngle();
 
-            if (a > 292.5 || a < 67.5) deltaX = -1;
-            if (a > 112.5 && a < 247.5) deltaX = 1;
-            if (a > 22.5 && a < 157.5) deltaY = 1;
-            if (a > 205.5 && a < 337.5) deltaY = -1;
+            double deltaX = Math.cos(Math.toRadians(a));
+            double deltaY = Math.sin(Math.toRadians(a));
 
             p.updatePosition(deltaX, deltaY);
 
             if (playerMap.get(p) == Direction.LEFT) {
-                p.turn(GameConstants.TURN_SPEED);
+                p.turn(-GameConstants.TURN_SPEED);
             }
             if (playerMap.get(p) == Direction.RIGHT) {
-                p.turn(-GameConstants.TURN_SPEED);
+                p.turn(GameConstants.TURN_SPEED);
             }
         }
     }
