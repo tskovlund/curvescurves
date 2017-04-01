@@ -13,6 +13,7 @@ public class PlayerImpl implements Player {
     private Position position;
     private Color color;
     private int angle;
+    private boolean alive;
 
     public PlayerImpl(String name, int score, Position position, Color color, int angle) {
         this.name = name;
@@ -20,6 +21,7 @@ public class PlayerImpl implements Player {
         this.position = position;
         this.color = color;
         this.angle = angle;
+        this.alive = true;
     }
 
     @Override
@@ -56,5 +58,15 @@ public class PlayerImpl implements Player {
     public void turn(double degrees) {
         angle = (angle + (int) degrees) % 360;
         if (angle < 0) angle = 360 + angle;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return alive;
+    }
+
+    @Override
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }

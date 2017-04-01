@@ -33,6 +33,11 @@ public class CanvasImpl extends Application implements Canvas {
         drawScores(players);
     }
 
+    @Override
+    public javafx.scene.canvas.Canvas getCanvas() {
+        return null;
+    }
+
     private void drawPlayers(List<Player> players) {
         for (Player player : players) {
             gc.setFill(player.getColor());

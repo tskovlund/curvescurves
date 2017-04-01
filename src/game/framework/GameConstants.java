@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
  */
 public class GameConstants {
     public static final int PLAYER_DOT_DIAMETER = 3;
+    public static final long MIN_DELTA_TIMESTAMP_NANOSECS = 100000000;
     public static int GAME_WIDTH = 1200;
     public static int GAME_HEIGHT = 750;
     public static final Color BACKGROUND_COLOR = Color.LIGHTSALMON;
@@ -27,8 +28,8 @@ public class GameConstants {
     ////
     //    CONTROL/TIME CONSTANTS
     ////
-    public static final double MS_PER_UPDATE = 7.5;
-    public static final double TURN_SPEED = 2;
+    public static final double MS_PER_UPDATE = 5;
+    public static final double TURN_SPEED = 1;
 
     public static final int MIN_INITIAL_PLAYER_DIST = 50;
 }

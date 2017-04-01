@@ -6,16 +6,19 @@ import javafx.scene.paint.Color;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameImpl implements Game, Runnable {
     private boolean running;
     private Map<Player, Direction> playerMap;
     private Canvas canvas;
+    private Map<Integer, Map<Integer, Set<Long>>> pathMap;
 
     public GameImpl(Canvas canvas) {
         running = false;
         playerMap = new HashMap<>();
         this.canvas = canvas;
+        pathMap = new HashMap<>();
     }
 
     public Map<String, Color> getAvailableColors() {
@@ -85,13 +88,21 @@ public class GameImpl implements Game, Runnable {
     }
 
     private void update() {
-        for (Player p : getPlayers()) {
+        for (Player p : getAlivePlayers()) {
             int a = p.getAngle();
 
             double deltaX = Math.cos(Math.toRadians(a));
             double deltaY = Math.sin(Math.toRadians(a));
 
             p.updatePosition(deltaX, deltaY);
+
+            Long timeStamp = System.nanoTime();
+
+            if (!isLegalPosition(p.getPosition(), timeStamp)) {
+                p.setAlive(false);
+            }
+
+            addToPath(p.getPosition(), timeStamp);
 
             if (playerMap.get(p) == Direction.LEFT) {
                 p.turn(-GameConstants.TURN_SPEED);
@@ -102,8 +113,22 @@ public class GameImpl implements Game, Runnable {
         }
     }
 
+    private boolean isLegalPosition(Position p, Long timeStamp) {
+        int x = (int) p.getX();
+        int y = (int) p.getY();
+        //TODO: Do for x, y +- 1
+        if (!pathMap.containsKey(x)) return true;
+        Map<Integer, Set<Long>> map = pathMap.get(x);
+        if (!map.containsKey(y)) return true;
+        Set<Long> set = map.get(y);
+        for (Long stamp : set) {
+            if (Math.abs(timeStamp - stamp) > GameConstants.MIN_DELTA_TIMESTAMP_NANOSECS) { return false; }
+        }
+        return true;
+    }
+
     private void render() {
-        canvas.update(getPlayers());
+        canvas.update(getAlivePlayers());
     }
 
     @Override
@@ -113,9 +138,31 @@ public class GameImpl implements Game, Runnable {
 
     @Override
     public Controller addPlayer(String name, Color color) {
-        Player p = new PlayerImpl(name, 0, newPlayerPosition(), color, randomAngle());
-        playerMap.put(p, Direction.FORWARD);
-        return new KeyController(this, p);
+        Position p = newPlayerPosition();
+        addToPath(p, System.nanoTime());
+        Player player = new PlayerImpl(name, 0, p, color, randomAngle());
+        playerMap.put(player, Direction.FORWARD);
+        return new KeyController(this, player);
+    }
+
+    private void addToPath(Position p, Long timeStamp) {
+        int x = (int) p.getX();
+        int y = (int) p.getY();
+        if (pathMap.containsKey(x)) {
+            if (pathMap.get(x).containsKey(y)) {
+                pathMap.get(x).get(y).add(timeStamp);
+            } else {
+                Set<Long> set = new TreeSet<>();
+                set.add(System.nanoTime());
+                pathMap.get(x).put(y, set);
+            }
+        } else {
+            Map<Integer, Set<Long>> map = new TreeMap<>();
+            Set<Long> set = new TreeSet<>();
+            set.add(timeStamp);
+            map.put(y,set);
+            pathMap.put(x, map);
+        }
     }
 
     private int randomAngle() {
@@ -138,18 +185,19 @@ public class GameImpl implements Game, Runnable {
     private Position newPlayerPosition() {
         Random r = new Random();
 
-        int x = r.nextInt(GameConstants.GAME_HEIGHT - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
-        int y = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD() - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
+        int x = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD()  - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
+        int y = r.nextInt(GameConstants.GAME_HEIGHT - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
 
-        while (!checkPosition(x,y)) {
-            x = r.nextInt(GameConstants.GAME_HEIGHT - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
-            y = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD() - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
+        while (!checkInitialPosition(x,y)) {
+            x = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD() - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
+            y = r.nextInt(GameConstants.GAME_HEIGHT - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
         }
 
-        return new PositionImpl(x, y);
+        Position p = new PositionImpl(x, y);
+        return p;
     }
 
-    private boolean checkPosition(int x, int y) {
+    private boolean checkInitialPosition(int x, int y) {
         for (Position p : getPositions()) {
             if (Math.abs(p.getX() - x) < GameConstants.MIN_INITIAL_PLAYER_DIST) {
                 return false;
@@ -177,5 +225,9 @@ public class GameImpl implements Game, Runnable {
     @Override
     public void run() {
         start();
+    }
+
+    private List<Player> getAlivePlayers() {
+        return getPlayers().stream().filter(Player::isAlive).collect(Collectors.toList());
     }
 }

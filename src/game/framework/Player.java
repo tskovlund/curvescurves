@@ -13,4 +13,6 @@ public interface Player {
     Color getColor();
     int getAngle();
     void turn(double degrees);
+    boolean isAlive();
+    void setAlive(boolean alive);
 }
