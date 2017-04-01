@@ -17,7 +17,7 @@ public class GameImpl implements Game {
     private CanvasImpl canvas;
     private Map<Integer, Map<Integer, Set<Long>>> pathMap;
     private long gameStartTime;
-
+    private int gapCount;
 
     public GameImpl(CurvesCurvesFactory factory) {
         running = false;
@@ -25,6 +25,7 @@ public class GameImpl implements Game {
         pathMap = new HashMap<>();
         this.factory = factory;
         gameStartTime = System.nanoTime();
+        gapCount = 0;
     }
 
     @Override
@@ -87,7 +88,9 @@ public class GameImpl implements Game {
 
             while (lag >= GameConstants.MS_PER_UPDATE) {
                 update();
-                render();
+                if (gapCount > GameConstants.GAP_SIZE) {
+                    render();
+                }
                 lag -= GameConstants.MS_PER_UPDATE;
             }
 
@@ -116,7 +119,9 @@ public class GameImpl implements Game {
                 incrementScores();
             }
 
-            addToPath(p.getPosition(), timeStamp);
+            if (gapCount > GameConstants.GAP_SIZE) {
+                addToPath(p.getPosition(), timeStamp);
+            }
 
             if (playerMap.get(p) == Direction.LEFT) {
                 p.turn(-GameConstants.TURN_SPEED);
@@ -124,6 +129,9 @@ public class GameImpl implements Game {
             if (playerMap.get(p) == Direction.RIGHT) {
                 p.turn(GameConstants.TURN_SPEED);
             }
+
+            gapCount++;
+            gapCount %= GameConstants.GAP_MODULO;
         }
     }
 
