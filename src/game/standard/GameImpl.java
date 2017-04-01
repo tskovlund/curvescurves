@@ -1,27 +1,31 @@
 package game.standard;
 
 import game.framework.*;
-import game.local.KeyController;
 import javafx.application.Application;
-import javafx.scene.input.KeyCode;
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static game.framework.GameConstants.STARTING_FREE_TIME;
+
 public class GameImpl implements Game {
     private final CurvesCurvesFactory factory;
     private boolean running;
     private Map<Player, Direction> playerMap;
-    private Canvas canvas;
+    private CanvasImpl canvas;
     private Map<Integer, Map<Integer, Set<Long>>> pathMap;
+    private long gameStartTime;
+
 
     public GameImpl(CurvesCurvesFactory factory) {
         running = false;
         playerMap = new HashMap<>();
         pathMap = new HashMap<>();
         this.factory = factory;
+        gameStartTime = System.nanoTime();
     }
 
     @Override
@@ -58,6 +62,11 @@ public class GameImpl implements Game {
     public void start() {
 //        new Thread(() -> Application.launch(CanvasImpl.class)).start();
 //        canvas = CanvasImpl.canvasImpl;
+
+        new Thread(() -> Application.launch(CanvasImpl.class)).start();
+        canvas = CanvasImpl.waitForStartUpTest();
+        canvas.printSomething();
+
         running = true;
         render();
         mainLoop();
@@ -120,6 +129,8 @@ public class GameImpl implements Game {
     }
 
     private boolean isLegalPosition(Position p, Long timeStamp) {
+        if (timeStamp < gameStartTime + STARTING_FREE_TIME) return true;
+
         int x = (int) p.getX();
         int y = (int) p.getY();
 
@@ -142,7 +153,8 @@ public class GameImpl implements Game {
     }
 
     private void render() {
-        canvas.update(getAlivePlayers());
+        canvas.update(this);
+//        Platform.runLater(() -> canvas.update(this));
     }
 
     @Override
@@ -153,7 +165,6 @@ public class GameImpl implements Game {
     @Override
     public Controller addPlayer(String name, Color color) {
         Position p = newPlayerPosition();
-        addToPath(p, System.nanoTime());
         Player player = factory.createPlayer(name, p, color, randomAngle());
         playerMap.put(player, Direction.FORWARD);
         return factory.createController(this, player);

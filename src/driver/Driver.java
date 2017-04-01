@@ -24,8 +24,12 @@ public class Driver {
             }
         });
 
-        BaseServer server = new BaseServer(new ServerToGameAdapter(), game);
-        server.start();
+//        BaseServer server = new BaseServer(new ServerToGameAdapter(), game);
+//        server.start();
+
+        game.addPlayer("1", Color.AQUA);
+        game.addPlayer("2", Color.BEIGE);
+        game.addPlayer("3", Color.BLUE);
 
         while (game.getPlayerMap().size() < 3) {
             try {

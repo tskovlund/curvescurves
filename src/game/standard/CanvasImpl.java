@@ -1,6 +1,5 @@
 package game.standard;
 
-import driver.Driver;
 import game.framework.Canvas;
 import game.framework.Player;
 import game.framework.Position;
@@ -16,6 +15,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 import static game.framework.GameConstants.*;
 
@@ -23,21 +23,50 @@ import static game.framework.GameConstants.*;
  * Made by Rasmus on 31/03/2017.
  */
 public class CanvasImpl extends Application implements Canvas {
+    public static final CountDownLatch latch = new CountDownLatch(1);
+    public static CanvasImpl canvasImpl = null;
     private GraphicsContext gc;
-    public static CanvasImpl canvasImpl;
 
     public CanvasImpl() {
-        canvasImpl = this;
+        setCanvasImpl(this);
+    }
+
+    public static CanvasImpl waitForStartUpTest() {
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return canvasImpl;
+    }
+
+    public static void setCanvasImpl(CanvasImpl canvasImpl0) {
+        canvasImpl = canvasImpl0;
+        latch.countDown();
+    }
+
+    public static void main(String[] args) {
+        Application.launch(args);
     }
 
     @Override
-    public void update(List<Player> players) {
-        drawPlayers(players);
-        drawScores(players);
+    public void update(GameImpl game) {
+        if (gc == null) return;
+        drawPlayers(new ArrayList<>(game.getPlayerMap().keySet()));
+        drawScores(new ArrayList<>(game.getPlayerMap().keySet()));
     }
 
     private void drawPlayers(List<Player> players) {
+        Position p1 = players.get(0).getPosition();
+        Position p2 = players.get(1).getPosition();
+        Position p3 = players.get(2).getPosition();
+
+        System.out.println(players.get(0).isAlive() + "" + players.get(1).isAlive() + "" + players.get(2).isAlive());
+
+        System.out.println(p1 + " " + p2 + " " + p3);
+
         for (Player player : players) {
+            System.out.println("Drawing");
             gc.setFill(player.getColor());
             Position position = player.getPosition();
             gc.fillOval(position.getX(), position.getY(), PLAYER_DOT_DIAMETER, PLAYER_DOT_DIAMETER);
@@ -83,7 +112,6 @@ public class CanvasImpl extends Application implements Canvas {
         }
     }
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("CurvesCurves");
@@ -93,6 +121,7 @@ public class CanvasImpl extends Application implements Canvas {
 
         javafx.scene.canvas.Canvas canvas = new javafx.scene.canvas.Canvas(GAME_WIDTH, GAME_HEIGHT);
         gc = canvas.getGraphicsContext2D();
+
         gc.setFill(BACKGROUND_COLOR);
         gc.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         root.getChildren().add(canvas);
@@ -101,20 +130,20 @@ public class CanvasImpl extends Application implements Canvas {
         primaryStage.setFullScreen(true);
 
         primaryStage.show();
-        Driver.main(null);
+//        Driver.main(null);
 
         /**
-        GameImpl game = new GameImpl(this);
-        Controller c = game.addPlayer("SlowBro", Color.RED, KeyCode.LEFT, KeyCode.RIGHT);
-        Controller c1 = game.addPlayer("BroSlow", Color.BLUE, KeyCode.A, KeyCode.D);
-        canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyController) c);
-        canvas.addEventHandler(KeyEvent.KEY_RELEASED, (KeyController) c);
-        canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyController) c1);
-        canvas.addEventHandler(KeyEvent.KEY_RELEASED, (KeyController) c1);
-        canvas.setFocusTraversable(true);
-        Thread t = new Thread(game);
-        t.start();
-        //testMethod(primaryStage);
+         GameImpl game = new GameImpl(this);
+         Controller c = game.addPlayer("SlowBro", Color.RED, KeyCode.LEFT, KeyCode.RIGHT);
+         Controller c1 = game.addPlayer("BroSlow", Color.BLUE, KeyCode.A, KeyCode.D);
+         canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyController) c);
+         canvas.addEventHandler(KeyEvent.KEY_RELEASED, (KeyController) c);
+         canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyController) c1);
+         canvas.addEventHandler(KeyEvent.KEY_RELEASED, (KeyController) c1);
+         canvas.setFocusTraversable(true);
+         Thread t = new Thread(game);
+         t.start();
+         //testMethod(primaryStage);
          **/
     }
 
@@ -147,7 +176,7 @@ public class CanvasImpl extends Application implements Canvas {
                 players.add(new PlayerImpl("Player 3", i + random.nextInt(5), pos3, Color.RED, 0));
                 players.add(new PlayerImpl("Player 4", i + random.nextInt(5), pos4, Color.PURPLE, 0));
 
-                update(players);
+//                update(players);
 
                 pos1 = new PositionImpl(pos1.getX() + random.nextInt(2), pos1.getY() + random.nextInt(2));
                 pos2 = new PositionImpl(pos2.getX() + random.nextInt(2), pos2.getY() + random.nextInt(2));
@@ -160,5 +189,9 @@ public class CanvasImpl extends Application implements Canvas {
         primaryStage.setOnCloseRequest(event -> testThread.interrupt());
         testThread.start();
 
+    }
+
+    public void printSomething() {
+        System.out.println("You called a method on the application");
     }
 }
