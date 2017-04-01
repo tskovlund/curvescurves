@@ -14,7 +14,6 @@ public class GameImpl implements Game {
     private Map<Player, Direction> playerMap;
     private CanvasImpl canvas;
     private Map<Integer, Map<Integer, Set<Long>>> pathMap;
-    private long gameStartTime;
     private int gapCount;
 
     public GameImpl(CurvesCurvesFactory factory) {
@@ -22,7 +21,6 @@ public class GameImpl implements Game {
         playerMap = new HashMap<>();
         pathMap = new HashMap<>();
         this.factory = factory;
-        gameStartTime = System.nanoTime();
         gapCount = 0;
     }
 
