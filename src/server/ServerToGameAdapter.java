@@ -23,9 +23,6 @@ public class ServerToGameAdapter implements ActionPerformer {
                 break;
             default : throw new NoSuchMethodException("The requested method is not valid in the given game");
         }
-
         game.setPlayerDirection(direction,player);
-
-
     }
 }

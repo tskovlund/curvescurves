@@ -4,6 +4,7 @@ package server;
 import game.framework.Game;
 import game.framework.Player;
 import game.standard.GameImpl;
+import game.standard.PlayerImpl;
 import server.Stubs.ActionPerformerStub;
 
 import java.io.BufferedReader;
@@ -25,7 +26,7 @@ public class BaseServer {
     private boolean running;
     private ActionPerformer actionPerformer;
     private Game game;
-    private HashMap<Socket,Player> socketPlayerHashMap;
+    private HashMap<Socket,String> socketPlayerHashMap;
 
     public BaseServer(ActionPerformer actionPerformer, GameImpl game) {
         this.actionPerformer = actionPerformer;
@@ -47,7 +48,8 @@ public class BaseServer {
                     String s;
                     while ((s = fromClient.readLine()) != null) {
                         //TODO perform action on game with Player
-                        actionPerformer.perform(s,game,null);
+
+                        actionPerformer.perform(s,game,game.getPlayer(socketPlayerHashMap.get(socket)));
                     }
                     System.out.println("End of stream");
                 } catch (IOException e) {
@@ -65,7 +67,9 @@ public class BaseServer {
         Socket res = null;
         try {
             res = serverSocket.accept();
-            game.addPlayer(String.valueOf(game.getPlayerMap().size()+1),null);
+            String playerName = String.valueOf(game.getPlayerMap().size());
+            game.addPlayer(playerName,game.getAvailableColor());
+            socketPlayerHashMap.put(res,playerName);
         } catch (IOException e) {
             System.out.println("The client has failed to connect, when server tried to accept the socket");
         }
@@ -84,7 +88,7 @@ public class BaseServer {
     }
 
     public static void main(String[] args) {
-        BaseServer baseServer = new BaseServer(new ActionPerformerStub(),new GameImpl(null));
+        BaseServer baseServer = new BaseServer(new ServerToGameAdapter(),new GameImpl(null));
         baseServer.start();
     }
 

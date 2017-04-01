@@ -6,9 +6,6 @@ import javafx.scene.paint.Color;
 import java.lang.reflect.Field;
 import java.util.*;
 
-/**
- * Created by fuve on 01/04/2017.
- */
 public class GameImpl implements Game {
     private boolean running;
     private Map<Player, Direction> playerMap;
@@ -94,6 +91,11 @@ public class GameImpl implements Game {
     @Override
     public void addPlayer(String name, Color color) {
         playerMap.put(new PlayerImpl(name, 0, newPlayerPosition(), color), Direction.FORWARD);
+    }
+
+    @Override
+    public Color getAvailableColor() {
+        return null;
     }
 
     @Override
