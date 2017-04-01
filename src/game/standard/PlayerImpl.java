@@ -69,4 +69,9 @@ public class PlayerImpl implements Player {
     public void setAlive(boolean alive) {
         this.alive = alive;
     }
+
+    @Override
+    public void incrementScore() {
+        score++;
+    }
 }

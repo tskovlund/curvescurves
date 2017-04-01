@@ -15,4 +15,5 @@ public interface Player {
     void turn(double degrees);
     boolean isAlive();
     void setAlive(boolean alive);
+    void incrementScore();
 }

@@ -113,6 +113,7 @@ public class GameImpl implements Game {
 
             if (!isLegalPosition(p.getPosition(), timeStamp)) {
                 p.setAlive(false);
+                incrementScores();
             }
 
             addToPath(p.getPosition(), timeStamp);
@@ -123,6 +124,12 @@ public class GameImpl implements Game {
             if (playerMap.get(p) == Direction.RIGHT) {
                 p.turn(GameConstants.TURN_SPEED);
             }
+        }
+    }
+
+    private void incrementScores() {
+        for (Player p : getAlivePlayers()) {
+            p.incrementScore();
         }
     }
 
