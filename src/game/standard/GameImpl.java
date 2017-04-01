@@ -54,7 +54,7 @@ public class GameImpl implements Game {
     }
 
     private void render() {
-        canvas.update();
+        canvas.update(getState());
     }
 
     @Override

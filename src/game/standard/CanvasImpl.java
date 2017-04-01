@@ -1,7 +1,6 @@
 package game.standard;
 
 import game.framework.Canvas;
-import game.framework.GameState;
 import game.framework.Player;
 import game.framework.Position;
 import javafx.application.Application;
@@ -24,9 +23,9 @@ public class CanvasImpl extends Application implements Canvas {
     private GraphicsContext gc;
 
     @Override
-    public void update(GameState gs) {
-        drawPlayers(gs.getPlayers());
-        drawScores(gs.getPlayers());
+    public void update(List<Player> players) {
+        drawPlayers(players);
+        drawScores(players);
     }
 
     private void drawPlayers(List<Player> players) {
@@ -97,7 +96,7 @@ public class CanvasImpl extends Application implements Canvas {
                 players.add(new PlayerImpl("Player 3", i + random.nextInt(5), pos3, Color.RED));
                 players.add(new PlayerImpl("Player 4", i + random.nextInt(5), pos4, Color.PURPLE));
 
-                update(() -> players);
+                update(players);
 
                 pos1 = new PositionImpl(pos1.getX() + random.nextInt(2), pos1.getY() + random.nextInt(2));
                 pos2 = new PositionImpl(pos2.getX() + random.nextInt(2), pos2.getY() + random.nextInt(2));

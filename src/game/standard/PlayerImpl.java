@@ -13,9 +13,9 @@ public class PlayerImpl implements Player {
     private Position position;
     private Color color;
 
-    public PlayerImpl(String name, Position position, Color color) {
+    public PlayerImpl(String name, int score, Position position, Color color) {
         this.name = name;
-        this.score = 0;
+        this.score = score;
         this.position = position;
         this.color = color;
     }
