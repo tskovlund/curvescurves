@@ -75,9 +75,10 @@ public class CanvasImpl extends Application implements Canvas {
         primaryStage.show();
 
         Game game = new GameImpl(this);
+        game.addPlayer("SlowBro", Color.RED);
         game.start();
 
-        testMethod(primaryStage);
+        //testMethod(primaryStage);
     }
 
     /**

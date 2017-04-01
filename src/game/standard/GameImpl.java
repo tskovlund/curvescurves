@@ -1,6 +1,7 @@
 package game.standard;
 
 import game.framework.*;
+import game.local.KeyController;
 import javafx.scene.paint.Color;
 
 import java.util.*;
@@ -64,7 +65,8 @@ public class GameImpl implements Game {
 
     @Override
     public void addPlayer(String name, Color color) {
-        playerMap.put(new PlayerImpl(name, 0, newPlayerPosition(), color), Direction.FORWARD);
+        Player p = new PlayerImpl(name, 0, newPlayerPosition(), color);
+        playerMap.put(p, Direction.FORWARD);
     }
 
     private Position newPlayerPosition() {

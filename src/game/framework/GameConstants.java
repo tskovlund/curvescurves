@@ -20,5 +20,5 @@ public class GameConstants {
     public static final int scoreSpaceForPlayerName = 130;
 
     public static final double MS_PER_UPDATE = 0.5;
-    public static final int MIN_INITIAL_DIST = 20;
+    public static final int MIN_INITIAL_DIST = 50;
 }
