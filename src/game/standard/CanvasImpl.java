@@ -42,19 +42,20 @@ public class CanvasImpl extends Application implements Canvas {
     }
 
     private void drawScores(List<Player> players) {
-        gc.setFill(BACKGROUND_COLOR);
+        gc.setFill(SCORE_BACKGROUND_COLOR);
         gc.fillRect(GAME_WIDTH - SCORE_OFFSET_TO_LEFT, 0, SCORE_OFFSET_TO_LEFT, GAME_HEIGHT);
 
+
         gc.setFill(Color.BLACK);
-        int xCoordinate = GAME_WIDTH - scoreOffSetToLeft + 10;
+        gc.setLineWidth(2);
+        gc.strokeLine(GAME_WIDTH-SCORE_OFFSET_TO_LEFT, 0, GAME_WIDTH-SCORE_OFFSET_TO_LEFT, GAME_HEIGHT);
+
+        int xCoordinate = GAME_WIDTH - SCORE_OFFSET_TO_LEFT + 10;
         Font oldFont = gc.getFont();
         gc.setFont(new Font("Verdana", 25));
-        gc.fillText("SCOREBOARD", xCoordinate, scoreOffSetToTop - 55);
+        gc.fillText("SCOREBOARD", xCoordinate, SCORE_OFFSET_TO_TOP - 55);
         gc.setFont(oldFont);
 
-        gc.fillText("Name:", xCoordinate, scoreOffSetToTop - scoreLineHeight, scoreSpaceForPlayerName);
-        gc.fillText("Score:", xCoordinate + scoreSpaceForPlayerName, scoreOffSetToTop - scoreLineHeight, scoreSpaceForPlayerName);
-        int xCoordinate = GAME_WIDTH - SCORE_OFFSET_TO_LEFT;
         gc.fillText("Name:", xCoordinate, SCORE_OFFSET_TO_TOP - SCORE_LINE_HEIGHT, SCORE_SPACE_FOR_PLAYER_NAME);
         gc.fillText("Score:", xCoordinate + SCORE_SPACE_FOR_PLAYER_NAME, SCORE_OFFSET_TO_TOP - SCORE_LINE_HEIGHT, SCORE_SPACE_FOR_PLAYER_NAME);
 

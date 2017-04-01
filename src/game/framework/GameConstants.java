@@ -20,7 +20,7 @@ public class GameConstants {
     //    SCORE BOARD CONSTANTS
     ////
     public static final int SCORE_OFFSET_TO_LEFT = 200;
-    public static final int SCORE_OFFSET_TO_TOP = 50;
+    public static final int SCORE_OFFSET_TO_TOP = 100;
     public static final int SCORE_LINE_HEIGHT = 20;
     public static final int SCORE_SPACE_FOR_PLAYER_NAME = 130;
 
