@@ -156,5 +156,6 @@ public class CanvasImpl extends Application implements Canvas {
         });
         primaryStage.setOnCloseRequest(event -> testThread.interrupt());
         testThread.start();
+
     }
 }

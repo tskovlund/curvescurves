@@ -22,19 +22,21 @@ public class Driver {
                 return new PlayerImpl(name, 0, p, color, angle);
             }
         });
+        Thread t = new Thread(()->{BaseServer server = new BaseServer(new ServerToGameAdapter(), game);
+            server.start();});
+        t.start();
 
-        BaseServer server = new BaseServer(new ServerToGameAdapter(), game);
-        server.start();
 
-        while (game.getPlayerMap().size() <= 3) {
+        while (game.getPlayerMap().size() < 3) {
             try {
+                System.out.println("Playermapsize"+game.getPlayerMap().size());
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
         System.out.println("LET THE GAMES BEGIN");
-        Thread t = new Thread(game);
-        t.start();
+        Thread thread = new Thread(game);
+        thread.start();
     }
 }
