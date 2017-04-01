@@ -1,6 +1,6 @@
 window.onload = function () {
     let ip = '10.37.0.64';
-    let port = '80';
+    let port = '8080';
 
     socket = new WebSocket('ws://'+ip+':'+port);
     
@@ -19,15 +19,11 @@ window.onload = function () {
 	    setUpListeners('mouseup','mousedown');
 	}
     });
-<<<<<<< HEAD
 
     socket.addEventListener('error', function(error) {
 	alert("Connection Failed");
     });
-}			   
-=======
-};
->>>>>>> ee7712e55651bf2fdaeed326070b3a96cfd63a24
+};			   
 
 var socket;
 var leftButton;
