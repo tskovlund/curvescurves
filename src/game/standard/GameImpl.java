@@ -10,18 +10,22 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameImpl implements Game, Runnable {
+    private final CurvesCurvesFactory factory;
     private boolean running;
     private Map<Player, Direction> playerMap;
     private Canvas canvas;
     private Map<Integer, Map<Integer, Set<Long>>> pathMap;
 
-    public GameImpl(Canvas canvas) {
+    public GameImpl(CurvesCurvesFactory factory) {
         running = false;
         playerMap = new HashMap<>();
-        this.canvas = canvas;
         pathMap = new HashMap<>();
+        this.factory = factory;
+
+        canvas = factory.createCanvas();
     }
 
+    @Override
     public Map<String, Color> getAvailableColors() {
         Map<String, Color> map = new HashMap<>();
 
@@ -146,12 +150,12 @@ public class GameImpl implements Game, Runnable {
     }
 
     @Override
-    public Controller addPlayer(String name, Color color, KeyCode left, KeyCode right) {
+    public Controller addPlayer(String name, Color color) {
         Position p = newPlayerPosition();
         addToPath(p, System.nanoTime());
-        Player player = new PlayerImpl(name, 0, p, color, randomAngle());
+        Player player = factory.createPlayer(name, p, color, randomAngle());
         playerMap.put(player, Direction.FORWARD);
-        return new KeyController(this, player, left, right);
+        return factory.createController(this, player);
     }
 
     private void addToPath(Position p, Long timeStamp) {

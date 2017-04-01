@@ -91,6 +91,7 @@ public class CanvasImpl extends Application implements Canvas {
         primaryStage.setFullScreen(true);
         primaryStage.show();
 
+        /**
         GameImpl game = new GameImpl(this);
         Controller c = game.addPlayer("SlowBro", Color.RED, KeyCode.LEFT, KeyCode.RIGHT);
         Controller c1 = game.addPlayer("BroSlow", Color.BLUE, KeyCode.A, KeyCode.D);
@@ -102,6 +103,7 @@ public class CanvasImpl extends Application implements Canvas {
         Thread t = new Thread(game);
         t.start();
         //testMethod(primaryStage);
+         **/
     }
 
     /**

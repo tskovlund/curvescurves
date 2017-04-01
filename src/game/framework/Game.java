@@ -13,8 +13,13 @@ public interface Game {
     void stop();
     void mainLoop();
     void setPlayerDirection(Direction d, Player player);
-    Controller addPlayer(String name, Color color, KeyCode left, KeyCode right);
+
+    Map<String, Color> getAvailableColors();
+
     Color getAvailableColor();
+
+    Controller addPlayer(String name, Color color);
+
     Player getPlayer(String name);
     Map<Player,Direction> getPlayerMap();
 }

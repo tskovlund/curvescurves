@@ -24,14 +24,14 @@ public class BaseServer {
     private Game game;
     private HashMap<Socket, String> socketPlayerHashMap;
 
-    public BaseServer(ActionPerformer actionPerformer, GameImpl game) {
+    public BaseServer(ActionPerformer actionPerformer, Game game) {
         this.actionPerformer = actionPerformer;
         this.game = game;
         this.running = true;
         socketPlayerHashMap = new HashMap<>();
     }
 
-    private void start() {
+    public void start() {
         try {
             registerOnPort();
             printLocalHostAddress();
@@ -70,7 +70,7 @@ public class BaseServer {
         try {
             res = serverSocket.accept();
             String playerName = String.valueOf(game.getPlayerMap().size());
-            game.addPlayer(playerName, game.getAvailableColor(), KeyCode.LEFT, KeyCode.RIGHT);
+            game.addPlayer(playerName, game.getAvailableColor());
             socketPlayerHashMap.put(res, playerName);
         } catch (IOException e) {
             System.out.println("The client has failed to connect, when server tried to accept the socket");
@@ -88,11 +88,6 @@ public class BaseServer {
             System.err.println(e);
             System.exit(-1);
         }
-    }
-
-    public static void main(String[] args) {
-        BaseServer baseServer = new BaseServer(new ActionPerformerStub(), new GameImpl(null));
-        baseServer.start();
     }
 
     public Game getGame() {
