@@ -39,14 +39,17 @@ public class CanvasImpl extends Application implements Canvas {
 
     private void drawScores(List<Player> players) {
         gc.setFill(BACKGROUND_COLOR);
-        gc.fillRect(GAME_WIDTH - scoreOffSetToLeft, scoreOffSetToTop-scoreLineHeight, scoreOffSetToLeft, GAME_HEIGHT - scoreOffSetToTop);
+        gc.fillRect(GAME_WIDTH - scoreOffSetToLeft, 0, scoreOffSetToLeft, GAME_HEIGHT);
 
         gc.setFill(Color.BLACK);
+
+        int xCoordinate = GAME_WIDTH - scoreOffSetToLeft;
+        gc.fillText("Name:", xCoordinate, scoreOffSetToTop - scoreLineHeight, scoreSpaceForPlayerName);
+        gc.fillText("Score:", xCoordinate + scoreSpaceForPlayerName, scoreOffSetToTop - scoreLineHeight, scoreSpaceForPlayerName);
 
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             int yCoordinate = scoreOffSetToTop + (i * scoreLineHeight);
-            int xCoordinate = GAME_WIDTH - scoreOffSetToLeft;
             gc.fillText(player.getName(), xCoordinate, yCoordinate, scoreSpaceForPlayerName);
             gc.fillText("" + player.getScore(), xCoordinate + scoreSpaceForPlayerName, yCoordinate, scoreOffSetToLeft - scoreSpaceForPlayerName);
         }
@@ -63,6 +66,7 @@ public class CanvasImpl extends Application implements Canvas {
         gc.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         root.getChildren().add(canvas);
         primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
         primaryStage.show();
 
         testMethod();
@@ -72,22 +76,34 @@ public class CanvasImpl extends Application implements Canvas {
     private void testMethod() {
         new Thread(() -> {
             int i = 0;
+            Random random = new Random();
+
+            Position pos1 = new PositionImpl(50, 50);
+            Position pos2 = new PositionImpl(50, 100);
+            Position pos3 = new PositionImpl(100, 50);
+            Position pos4 = new PositionImpl(100, 100);
+
 
             while (true) {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(5);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Random random = new Random();
                 List<Player> players = new ArrayList<>();
-                int moveStep = 5;
-                players.add(new PlayerImpl("Player 1", i + random.nextInt(5), new PositionImpl(50+random.nextInt(moveStep), 50+random.nextInt(moveStep)), Color.AQUA));
-                players.add(new PlayerImpl("Player 2 WITH CRAZILY LONG NAME LIKE REALLY CRAZY!", i + random.nextInt(moveStep), new PositionImpl(100+random.nextInt(moveStep), 50+random.nextInt(2)), Color.BLUEVIOLET));
-                players.add(new PlayerImpl("Player 3", i + random.nextInt(5), new PositionImpl(50+random.nextInt(moveStep), 100+random.nextInt(moveStep)), Color.RED));
-                players.add(new PlayerImpl("Player 4", i + random.nextInt(5), new PositionImpl(100+random.nextInt(moveStep), 100+random.nextInt(moveStep)), Color.PURPLE));
+
+                players.add(new PlayerImpl("Player 1", i + random.nextInt(5), pos1, Color.AQUA));
+                players.add(new PlayerImpl("Player 2 WITH CRAZILY LONG NAME LIKE REALLY CRAZY!", i + random.nextInt(5), pos2, Color.BLUEVIOLET));
+                players.add(new PlayerImpl("Player 3", i + random.nextInt(5), pos3, Color.RED));
+                players.add(new PlayerImpl("Player 4", i + random.nextInt(5), pos4, Color.PURPLE));
 
                 update(() -> players);
+
+                pos1 = new PositionImpl(pos1.getX() + random.nextInt(2), pos1.getY() + random.nextInt(2));
+                pos2 = new PositionImpl(pos2.getX() + random.nextInt(2), pos2.getY() + random.nextInt(2));
+                pos3 = new PositionImpl(pos3.getX() + random.nextInt(2), pos3.getY() + random.nextInt(2));
+                pos4 = new PositionImpl(pos4.getX() + random.nextInt(2), pos4.getY() + random.nextInt(2));
+
                 i += 5;
             }
         }).start();
