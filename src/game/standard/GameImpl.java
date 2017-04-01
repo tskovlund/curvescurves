@@ -126,7 +126,7 @@ public class GameImpl implements Game, Runnable {
                         Set<Long> set = yMap.get(j);
                         for (Long stamp : set) {
                             if (Math.abs(timeStamp - stamp) > GameConstants.MIN_DELTA_TIMESTAMP_NANOSECS) {
-                                return false;
+                                return true;
                             }
                         }
                     }

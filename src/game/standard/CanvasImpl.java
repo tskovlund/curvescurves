@@ -1,20 +1,19 @@
 package game.standard;
 
 import game.framework.Canvas;
-import game.framework.Controller;
+import game.framework.Game;
 import game.framework.Player;
 import game.framework.Position;
-import game.local.KeyController;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import server.BaseServer;
+import server.ServerToGameAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,7 @@ import static game.framework.GameConstants.*;
  */
 public class CanvasImpl extends Application implements Canvas {
     private GraphicsContext gc;
+    private Game game;
 
     @Override
     public void update(List<Player> players) {
@@ -91,17 +91,17 @@ public class CanvasImpl extends Application implements Canvas {
         primaryStage.setFullScreen(true);
         primaryStage.show();
 
-        GameImpl game = new GameImpl(this);
-        Controller c = game.addPlayer("SlowBro", Color.RED, KeyCode.LEFT, KeyCode.RIGHT);
-        Controller c1 = game.addPlayer("BroSlow", Color.BLUE, KeyCode.A, KeyCode.D);
-        canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyController) c);
-        canvas.addEventHandler(KeyEvent.KEY_RELEASED, (KeyController) c);
-        canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyController) c1);
-        canvas.addEventHandler(KeyEvent.KEY_RELEASED, (KeyController) c1);
+        game = new GameImpl(this);
+        Thread thread = new Thread(()->{BaseServer server = new BaseServer(new ServerToGameAdapter(), game);
+            server.start();});
+        thread.start();
         canvas.setFocusTraversable(true);
-        Thread t = new Thread(game);
+        Thread t = new Thread((Runnable) game);
         t.start();
-        //testMethod(primaryStage);
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     /**
@@ -124,7 +124,7 @@ public class CanvasImpl extends Application implements Canvas {
                 try {
                     Thread.sleep(5);
                 } catch (InterruptedException e) {
-                    return;
+                    System.out.println("WRONG!!!!!");
                 }
                 List<Player> players = new ArrayList<>();
 
