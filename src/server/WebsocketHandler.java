@@ -45,12 +45,15 @@ public class WebsocketHandler {
             return false;
         }
 
-        //Write handshake response
-        out.write("HTTP/1.1 101 Switching Protocols\r\n"
+
+        String outString = "HTTP/1.1 101 Switching Protocols\r\n"
                 + "Upgrade: websocket\r\n"
                 + "Connection: Upgrade\r\n"
                 + "Sec-WebSocket-Accept: " + hash + "\r\n"
-                + "\r\n");
+                + "\r\n";
+        System.out.println(outString);
+        //Write handshake response
+        out.write(outString);
         out.flush();
 
         return true;

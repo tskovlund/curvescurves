@@ -93,7 +93,7 @@ public class BaseServer {
     }
 
     public static void main(String[] args) {
-        BaseServer baseServer = new BaseServer(new ServerToGameAdapter(), new GameImpl(null));
+        BaseServer baseServer = new BaseServer(new ActionPerformerStub(), new GameImpl(null));
         baseServer.start();
     }
 

@@ -1,13 +1,6 @@
 window.onload = function () {
-    let ip = prompt("IP-Addres");
-    let port = prompt("Port");
-
-    if (ip == null) {
-	ip = '37.187.16.177';
-    }
-    if (port == null) {
-	port = '40499';
-    } 
+    ip = '10.37.0.35';
+    port = '80';
 
     socket = new WebSocket('ws://'+ip+':'+port);
     
