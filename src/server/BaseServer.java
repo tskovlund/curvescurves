@@ -1,7 +1,9 @@
 package server;
 
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -26,15 +28,27 @@ public class BaseServer {
         registerOnPort();
 
         while (running) {
+            //Main thread is waiting for clients
             Socket socket = waitForConnectionFromClient();
 
-
+            Thread t = new Thread(() -> {
+                try {
+                    BufferedReader fromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    String s;
+                    while ((s = fromClient.readLine()) != null) {
+                        System.out.println("From client" + s);
+                    }
+                    System.out.println("End of stream");
+                } catch (IOException e) {
+                    System.out.println("Something is wrong");
+                    e.printStackTrace();
+                }
+            });
+            t.start();
         }
-
-
-
     }
-    private Socket waitForConnectionFromClient () {
+
+    private Socket waitForConnectionFromClient() {
         Socket res = null;
         try {
             res = serverSocket.accept();
@@ -54,5 +68,10 @@ public class BaseServer {
             System.err.println(e);
             System.exit(-1);
         }
+    }
+
+    public static void main(String[] args) {
+        BaseServer baseServer = new BaseServer();
+        baseServer.start();
     }
 }
