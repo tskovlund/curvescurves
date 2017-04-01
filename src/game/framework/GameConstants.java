@@ -19,4 +19,5 @@ public class GameConstants {
     public static final int scoreLineHeight = 20;
     public static final int scoreSpaceForPlayerName = 130;
 
+    public static final double MS_PER_UPDATE = 0.5;
 }
