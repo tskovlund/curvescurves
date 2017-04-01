@@ -7,7 +7,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -40,19 +39,19 @@ public class CanvasImpl extends Application implements Canvas {
 
     private void drawScores(List<Player> players) {
         gc.setFill(BACKGROUND_COLOR);
-        gc.fillRect(GAME_WIDTH - scoreOffSetToLeft, 0, scoreOffSetToLeft, GAME_HEIGHT);
+        gc.fillRect(GAME_WIDTH - SCORE_OFFSET_TO_LEFT, 0, SCORE_OFFSET_TO_LEFT, GAME_HEIGHT);
 
         gc.setFill(Color.BLACK);
 
-        int xCoordinate = GAME_WIDTH - scoreOffSetToLeft;
-        gc.fillText("Name:", xCoordinate, scoreOffSetToTop - scoreLineHeight, scoreSpaceForPlayerName);
-        gc.fillText("Score:", xCoordinate + scoreSpaceForPlayerName, scoreOffSetToTop - scoreLineHeight, scoreSpaceForPlayerName);
+        int xCoordinate = GAME_WIDTH - SCORE_OFFSET_TO_LEFT;
+        gc.fillText("Name:", xCoordinate, SCORE_OFFSET_TO_TOP - SCORE_LINE_HEIGHT, SCORE_SPACE_FOR_PLAYER_NAME);
+        gc.fillText("Score:", xCoordinate + SCORE_SPACE_FOR_PLAYER_NAME, SCORE_OFFSET_TO_TOP - SCORE_LINE_HEIGHT, SCORE_SPACE_FOR_PLAYER_NAME);
 
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
-            int yCoordinate = scoreOffSetToTop + (i * scoreLineHeight);
-            gc.fillText(player.getName(), xCoordinate, yCoordinate, scoreSpaceForPlayerName);
-            gc.fillText("" + player.getScore(), xCoordinate + scoreSpaceForPlayerName, yCoordinate, scoreOffSetToLeft - scoreSpaceForPlayerName);
+            int yCoordinate = SCORE_OFFSET_TO_TOP + (i * SCORE_LINE_HEIGHT);
+            gc.fillText(player.getName(), xCoordinate, yCoordinate, SCORE_SPACE_FOR_PLAYER_NAME);
+            gc.fillText("" + player.getScore(), xCoordinate + SCORE_SPACE_FOR_PLAYER_NAME, yCoordinate, SCORE_OFFSET_TO_LEFT - SCORE_SPACE_FOR_PLAYER_NAME);
         }
     }
 
