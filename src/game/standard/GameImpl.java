@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public class GameImpl implements Game {
+public class GameImpl implements Game, Runnable {
     private boolean running;
     private Map<Player, Direction> playerMap;
     private Canvas canvas;
@@ -50,6 +50,7 @@ public class GameImpl implements Game {
     @Override
     public void start() {
         running = true;
+        render();
         mainLoop();
     }
 
@@ -71,6 +72,12 @@ public class GameImpl implements Game {
             while (lag >= GameConstants.MS_PER_UPDATE) {
                 update();
                 lag -= GameConstants.MS_PER_UPDATE;
+            }
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
             render();
@@ -170,5 +177,10 @@ public class GameImpl implements Game {
 
     private List<Player> getPlayers() {
         return new ArrayList<>(playerMap.keySet());
+    }
+
+    @Override
+    public void run() {
+        start();
     }
 }

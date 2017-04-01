@@ -5,6 +5,7 @@ import game.framework.Direction;
 import game.framework.Game;
 import game.framework.Player;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -29,7 +30,9 @@ public class KeyController implements Controller, KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+        keyPressed(e);
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {

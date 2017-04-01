@@ -74,10 +74,10 @@ public class CanvasImpl extends Application implements Canvas {
         primaryStage.setFullScreen(true);
         primaryStage.show();
 
-        Game game = new GameImpl(this);
+        GameImpl game = new GameImpl(this);
         game.addPlayer("SlowBro", Color.RED);
-        game.start();
-
+        Thread t = new Thread(game);
+        t.start();
         //testMethod(primaryStage);
     }
 
