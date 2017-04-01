@@ -13,6 +13,7 @@ window.onload = function () {
         connectionEstablished();
         leftButton = document.getElementById("left");
         rightButton = document.getElementById("right");
+
         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
             setUpListeners('touchend', 'touchstart');
         } else {
@@ -79,7 +80,6 @@ function setUpListeners(up, down) {
 function connectionEstablished() {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar")
-
     // Add the "show" class to DIV
     x.className = "show";
 
