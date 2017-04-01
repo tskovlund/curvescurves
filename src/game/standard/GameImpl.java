@@ -161,11 +161,10 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public Controller addPlayer(String name, Color color) {
+    public void addPlayer(String name, Color color) {
         Position p = newPlayerPosition();
         Player player = factory.createPlayer(name, p, color, randomAngle());
         playerMap.put(player, Direction.FORWARD);
-        return factory.createController(this, player);
     }
 
     private void addToPath(Position p, Long timeStamp) {
