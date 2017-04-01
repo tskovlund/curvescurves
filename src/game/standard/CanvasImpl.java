@@ -1,17 +1,16 @@
 package game.standard;
 
 import game.framework.Canvas;
+import game.framework.Game;
 import game.framework.Player;
 import game.framework.Position;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,6 @@ import static game.framework.GameConstants.*;
  */
 public class CanvasImpl extends Application implements Canvas {
     private GraphicsContext gc;
-    private Thread testThread;
 
     @Override
     public void update(List<Player> players) {
@@ -76,14 +74,18 @@ public class CanvasImpl extends Application implements Canvas {
         primaryStage.setFullScreen(true);
         primaryStage.show();
 
-        primaryStage.setOnCloseRequest(event -> testThread.interrupt());
+        Game game = new GameImpl(this);
+        game.start();
 
-        testMethod();
+        testMethod(primaryStage);
     }
 
-
-    private void testMethod() {
-        testThread = new Thread(() -> {
+    /**
+     * Method for visually testing the canvas
+     * @param primaryStage The stage on which the test is run
+     */
+    private void testMethod(Stage primaryStage) {
+        Thread testThread = new Thread(() -> {
             int i = 0;
             Random random = new Random();
 
@@ -116,6 +118,7 @@ public class CanvasImpl extends Application implements Canvas {
                 i += 5;
             }
         });
+        primaryStage.setOnCloseRequest(event -> testThread.interrupt());
         testThread.start();
     }
 }
