@@ -17,11 +17,6 @@ public class Driver {
     public static void main(String[] args) {
         Game game = new GameImpl(new CurvesCurvesFactory() {
             @Override
-            public Canvas createCanvas() {
-                return new CanvasImpl();
-            }
-
-            @Override
             public Controller createController(GameImpl game, Player player) {
                 return new KeyController(game, player, KeyCode.LEFT, KeyCode.RIGHT);
             }

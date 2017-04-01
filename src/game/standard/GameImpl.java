@@ -22,7 +22,6 @@ public class GameImpl implements Game {
         playerMap = new HashMap<>();
         pathMap = new HashMap<>();
         this.factory = factory;
-        canvas = factory.createCanvas();
     }
 
     @Override
@@ -58,6 +57,7 @@ public class GameImpl implements Game {
     @Override
     public void start() {
         new Thread(() -> Application.launch(CanvasImpl.class)).start();
+        canvas = CanvasImpl.canvasImpl;
         running = true;
         render();
         mainLoop();

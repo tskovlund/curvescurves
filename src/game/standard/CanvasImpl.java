@@ -23,6 +23,11 @@ import static game.framework.GameConstants.*;
  */
 public class CanvasImpl extends Application implements Canvas {
     private GraphicsContext gc;
+    public static CanvasImpl canvasImpl;
+
+    public CanvasImpl() {
+        canvasImpl = this;
+    }
 
     @Override
     public void update(List<Player> players) {
