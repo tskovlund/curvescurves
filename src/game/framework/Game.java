@@ -11,4 +11,5 @@ public interface Game {
     void mainLoop();
     void setPlayerDirection(Direction d, Player player);
     void addPlayer(String name, Color color);
+    Color getAvailableColor();
 }
