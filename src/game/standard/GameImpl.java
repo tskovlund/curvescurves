@@ -94,11 +94,6 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public Color getAvailableColor() {
-        return null;
-    }
-
-    @Override
     public Player getPlayer(String name) {
         for (Player p : playerMap.keySet()) {
             if (p.getName().equals(name)) return p;

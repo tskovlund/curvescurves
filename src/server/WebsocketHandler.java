@@ -20,17 +20,12 @@ public class WebsocketHandler {
 
     public static final int MASK_SIZE = 4;
     private Socket socket;
-    private MessageResponse response;
 
-    public WebsocketHandler(Socket socket, MessageResponse response) throws IOException {
+    public WebsocketHandler(Socket socket) throws IOException {
         this.socket = socket;
-        this.response = response;
-        if(handshake()) {
-            listenerThread();
-        }
     }
 
-    private boolean handshake() throws IOException {
+    public boolean handshake() throws IOException {
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
@@ -72,21 +67,6 @@ public class WebsocketHandler {
         return b;
     }
 
-    public void listenerThread() {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        response.handleMessage(receiveMessage());
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        t.start();
-    }
 
     public String receiveMessage() throws IOException {
         byte[] buf = readBytes(2);
