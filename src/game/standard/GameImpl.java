@@ -8,8 +8,6 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static game.framework.GameConstants.STARTING_FREE_TIME;
-
 public class GameImpl implements Game {
     private final CurvesCurvesFactory factory;
     private boolean running;
@@ -115,6 +113,7 @@ public class GameImpl implements Game {
             Long timeStamp = System.nanoTime();
 
             if (!isLegalPosition(p.getPosition(), timeStamp)) {
+                System.out.println(p.getName() + " has died");
                 p.setAlive(false);
                 incrementScores();
             }
@@ -142,8 +141,6 @@ public class GameImpl implements Game {
     }
 
     private boolean isLegalPosition(Position p, Long timeStamp) {
-        if (timeStamp < gameStartTime + STARTING_FREE_TIME) return true;
-
         int x = (int) p.getX();
         int y = (int) p.getY();
 

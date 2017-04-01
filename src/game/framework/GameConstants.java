@@ -11,7 +11,6 @@ public class GameConstants {
     ////
     public static final int PLAYER_DOT_DIAMETER = 3;
     public static final Color BACKGROUND_COLOR = Color.LIGHTSALMON;
-    public static final long STARTING_FREE_TIME = 2000000000;
 
     ////
     //    SCORE BOARD CONSTANTS

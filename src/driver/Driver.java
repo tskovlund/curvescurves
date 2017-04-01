@@ -14,12 +14,14 @@ public class Driver {
     public static void main(String[] args) {
         Game game = new GameImpl((name, p, color, angle) -> new PlayerImpl(name, 0, p, color, angle));
 
-//        BaseServer server = new BaseServer(new ServerToGameAdapter(), game);
-//        server.start();
+        BaseServer server = new BaseServer(new ServerToGameAdapter(), game);
+        new Thread(server::start).start();
 
-        game.addPlayer("1", Color.AQUA);
-        game.addPlayer("2", Color.BEIGE);
-        game.addPlayer("3", Color.BLUE);
+//        game.addPlayer("1", Color.AQUA);
+//        game.addPlayer("2", Color.BEIGE);
+//        game.addPlayer("3", Color.BLUE);
+//        game.addPlayer("4", Color.WHITE);
+//        game.addPlayer("5", Color.PURPLE);
 
         while (game.getPlayerMap().size() < 3) {
             try {

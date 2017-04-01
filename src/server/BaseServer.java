@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class BaseServer {
 
     //specify the port of the server
-    private int portNumber = 80;
+    private int portNumber = 8080;
     private ServerSocket serverSocket;
     private boolean running;
     private ActionPerformer actionPerformer;
