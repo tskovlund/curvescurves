@@ -1,14 +1,17 @@
 package game.standard;
 
-import game.framework.*;
+import game.framework.Canvas;
+import game.framework.Controller;
+import game.framework.Player;
+import game.framework.Position;
 import game.local.KeyController;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -39,12 +42,20 @@ public class CanvasImpl extends Application implements Canvas {
     }
 
     private void drawScores(List<Player> players) {
-        gc.setFill(BACKGROUND_COLOR);
+        gc.setFill(SCORE_BACKGROUND_COLOR);
         gc.fillRect(GAME_WIDTH - scoreOffSetToLeft, 0, scoreOffSetToLeft, GAME_HEIGHT);
+        gc.setStroke(Color.BLACK);
+        int lineWidth = 5;
+        gc.setLineWidth(lineWidth);
+        gc.strokeLine(GAME_WIDTH - scoreOffSetToLeft, 0, GAME_WIDTH - scoreOffSetToLeft, GAME_HEIGHT);
 
         gc.setFill(Color.BLACK);
+        int xCoordinate = GAME_WIDTH - scoreOffSetToLeft + 10;
+        Font oldFont = gc.getFont();
+        gc.setFont(new Font("Verdana", 25));
+        gc.fillText("SCOREBOARD", xCoordinate, scoreOffSetToTop - 55);
+        gc.setFont(oldFont);
 
-        int xCoordinate = GAME_WIDTH - scoreOffSetToLeft;
         gc.fillText("Name:", xCoordinate, scoreOffSetToTop - scoreLineHeight, scoreSpaceForPlayerName);
         gc.fillText("Score:", xCoordinate + scoreSpaceForPlayerName, scoreOffSetToTop - scoreLineHeight, scoreSpaceForPlayerName);
 
@@ -86,6 +97,7 @@ public class CanvasImpl extends Application implements Canvas {
 
     /**
      * Method for visually testing the canvas
+     *
      * @param primaryStage The stage on which the test is run
      */
     private void testMethod(Stage primaryStage) {
