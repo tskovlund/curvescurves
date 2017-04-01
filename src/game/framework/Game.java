@@ -12,9 +12,8 @@ public interface Game {
     void stop();
     void mainLoop();
     void setPlayerDirection(Direction d, Player player);
-    void addPlayer(String name, Color color);
+    Controller addPlayer(String name, Color color);
     Color getAvailableColor();
-
     Player getPlayer(String name);
     Map<Player,Direction> getPlayerMap();
 }

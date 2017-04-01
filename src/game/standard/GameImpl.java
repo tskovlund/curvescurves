@@ -117,10 +117,10 @@ public class GameImpl implements Game, Runnable {
     }
 
     @Override
-    public void addPlayer(String name, Color color) {
+    public Controller addPlayer(String name, Color color) {
         Player p = new PlayerImpl(name, 0, newPlayerPosition(), color, randomAngle());
         playerMap.put(p, Direction.FORWARD);
-        new KeyController(this, p);
+        return new KeyController(this, p);
     }
 
     private int randomAngle() {

@@ -1,13 +1,12 @@
 package game.standard;
 
-import game.framework.Canvas;
-import game.framework.Game;
-import game.framework.Player;
-import game.framework.Position;
+import game.framework.*;
+import game.local.KeyController;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -75,7 +74,9 @@ public class CanvasImpl extends Application implements Canvas {
         primaryStage.show();
 
         GameImpl game = new GameImpl(this);
-        game.addPlayer("SlowBro", Color.RED);
+        Controller c = game.addPlayer("SlowBro", Color.RED);
+        canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyController) c);
+        canvas.addEventHandler(KeyEvent.KEY_RELEASED, (KeyController) c);
         Thread t = new Thread(game);
         t.start();
         //testMethod(primaryStage);
