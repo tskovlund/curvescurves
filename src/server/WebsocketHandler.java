@@ -11,26 +11,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import sun.misc.BASE64Encoder;
 
-/**
- *
- * @author
- * Anders
- */
 public class WebsocketHandler {
 
     public static final int MASK_SIZE = 4;
     private Socket socket;
-    private MessageResponse response;
 
-    public WebsocketHandler(Socket socket, MessageResponse response) throws IOException {
+
+    public WebsocketHandler(Socket socket) {
         this.socket = socket;
-        this.response = response;
-        if(handshake()) {
-            listenerThread();
-        }
     }
 
-    private boolean handshake() throws IOException {
+    public boolean handshake() throws IOException {
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
@@ -66,43 +57,24 @@ public class WebsocketHandler {
         return true;
     }
 
-    private byte[] readBytes(int numOfBytes) throws IOException {
-        byte[] b = new byte[numOfBytes];
-        socket.getInputStream().read(b);
-        return b;
-    }
-
-    public void listenerThread() {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        response.handleMessage(receiveMessage());
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        t.start();
-    }
-
-    public String receiveMessage() throws IOException {
+    public String recieveMessage() throws IOException {
         byte[] buf = readBytes(2);
         int opcode = buf[0] & 0x0F;
         if (opcode == 8) {
             //Client want to close connection!
-            System.out.println("Client closed!");
-            socket.close();
-            System.exit(0);
             return null;
         } else {
             final int payloadSize = getSizeOfPayload(buf[1]);
             buf = readBytes(MASK_SIZE + payloadSize);
             buf = unMask(Arrays.copyOfRange(buf, 0, 4), Arrays.copyOfRange(buf, 4, buf.length));
-            return new String(buf);
+            String message = new String(buf);
+            return message;
         }
+    }
+    private byte[] readBytes(int numOfBytes) throws IOException {
+        byte[] b = new byte[numOfBytes];
+        socket.getInputStream().read(b);
+        return b;
     }
 
     private int getSizeOfPayload(byte b) {
