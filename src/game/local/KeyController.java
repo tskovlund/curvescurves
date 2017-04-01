@@ -1,6 +1,5 @@
 package game.local;
 
-import game.framework.Controller;
 import game.framework.Direction;
 import game.framework.Game;
 import game.framework.Player;
@@ -11,7 +10,7 @@ import javafx.scene.input.KeyEvent;
 /**
  * Created by fuve on 01/04/2017.
  */
-public class KeyController implements Controller, EventHandler<KeyEvent> {
+public class KeyController implements EventHandler<KeyEvent> {
     private final Player player;
     private final Game game;
 
@@ -28,8 +27,7 @@ public class KeyController implements Controller, EventHandler<KeyEvent> {
         rightKey = right;
     }
 
-    @Override
-    public void move(Direction d) {
+    private void move(Direction d) {
         game.setPlayerDirection(d, player);
     }
 

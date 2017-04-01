@@ -18,7 +18,7 @@ public interface Game extends Runnable {
 
     Color getAvailableColor();
 
-    Controller addPlayer(String name, Color color);
+    void addPlayer(String name, Color color);
 
     Player getPlayer(String name);
     List<Player> getPlayers();
