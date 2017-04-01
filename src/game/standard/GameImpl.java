@@ -54,7 +54,7 @@ public class GameImpl implements Game {
     }
 
     private void render() {
-        canvas.update(getState());
+        canvas.update(getPlayers());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class GameImpl implements Game {
 
     @Override
     public void addPlayer(String name, Color color) {
-        playerMap.put(new PlayerImpl(name, newPlayerPosition(), color), Direction.FORWARD);
+        playerMap.put(new PlayerImpl(name, 0, newPlayerPosition(), color), Direction.FORWARD);
     }
 
     private Position newPlayerPosition() {
@@ -73,21 +73,31 @@ public class GameImpl implements Game {
         int x = r.nextInt(GameConstants.GAME_HEIGHT);
         int y = r.nextInt(GameConstants.GAME_WIDTH);
 
-        while (!checkPlayerPosition()) {
+        while (!checkPosition(x,y)) {
             x = r.nextInt(GameConstants.GAME_HEIGHT);
             y = r.nextInt(GameConstants.GAME_WIDTH);
         }
 
-        return PositionImpl(x,y);
+        return new PositionImpl(x,y);
     }
 
-    private boolean checkPlayerPosition() {
+    private boolean checkPosition(int x, int y) {
         for (Position p : getPositions()) {
-
+            if (Math.abs(p.getX() - x) < GameConstants.MIN_INITIAL_DIST) { return false; }
+            if (Math.abs(p.getY() - y) < GameConstants.MIN_INITIAL_DIST) { return false; }
         }
+        return true;
     }
 
-    public List<Position> getPositions() {
-        return new ArrayList<>(playerMap.values());
+    private List<Position> getPositions() {
+        List<Position> positions = new ArrayList<>();
+        for (Player p : getPlayers()) {
+            positions.add(p.getPosition());
+        }
+        return positions;
+    }
+
+    private List<Player> getPlayers() {
+        return new ArrayList<>(playerMap.keySet());
     }
 }
