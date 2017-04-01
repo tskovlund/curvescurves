@@ -57,7 +57,9 @@ public class GameImpl implements Game {
     @Override
     public void start() {
         new Thread(() -> Application.launch(CanvasImpl.class)).start();
-        canvas = CanvasImpl.canvasImpl;
+        while (canvas == null) {
+            canvas = CanvasImpl.canvasImpl;
+        }
         running = true;
         render();
         mainLoop();
