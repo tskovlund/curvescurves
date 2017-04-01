@@ -69,6 +69,19 @@ public class GameImpl implements Game {
         playerMap.put(p, Direction.FORWARD);
     }
 
+    @Override
+    public Player getPlayer(String name) {
+        for (Player p : playerMap.keySet()){
+            if (p.getName().equals(name)) return p;
+        }
+        return null;
+    }
+
+    @Override
+    public Map<Player, Direction> getPlayerMap() {
+        return playerMap;
+    }
+
     private Position newPlayerPosition() {
         Random r = new Random();
 
@@ -90,6 +103,7 @@ public class GameImpl implements Game {
         }
         return true;
     }
+
 
     private List<Position> getPositions() {
         List<Position> positions = new ArrayList<>();
