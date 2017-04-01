@@ -4,11 +4,14 @@ import game.framework.Canvas;
 import game.framework.Player;
 import game.framework.Position;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,7 @@ import static game.framework.GameConstants.*;
  */
 public class CanvasImpl extends Application implements Canvas {
     private GraphicsContext gc;
+    private Thread testThread;
 
     @Override
     public void update(List<Player> players) {
@@ -59,6 +63,9 @@ public class CanvasImpl extends Application implements Canvas {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("CurvesCurves");
         Group root = new Group();
+        GAME_WIDTH = (int) Screen.getPrimary().getBounds().getWidth();
+        GAME_HEIGHT = (int) Screen.getPrimary().getBounds().getHeight();
+
         javafx.scene.canvas.Canvas canvas = new javafx.scene.canvas.Canvas(GAME_WIDTH, GAME_HEIGHT);
         gc = canvas.getGraphicsContext2D();
         gc.setFill(BACKGROUND_COLOR);
@@ -66,14 +73,17 @@ public class CanvasImpl extends Application implements Canvas {
         root.getChildren().add(canvas);
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
+        primaryStage.setFullScreen(true);
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(event -> testThread.interrupt());
 
         testMethod();
     }
 
 
     private void testMethod() {
-        new Thread(() -> {
+        testThread = new Thread(() -> {
             int i = 0;
             Random random = new Random();
 
@@ -87,7 +97,7 @@ public class CanvasImpl extends Application implements Canvas {
                 try {
                     Thread.sleep(5);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    return;
                 }
                 List<Player> players = new ArrayList<>();
 
@@ -105,6 +115,7 @@ public class CanvasImpl extends Application implements Canvas {
 
                 i += 5;
             }
-        }).start();
+        });
+        testThread.start();
     }
 }
