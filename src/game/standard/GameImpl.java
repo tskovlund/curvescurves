@@ -4,12 +4,9 @@ import game.framework.*;
 import game.local.KeyController;
 import javafx.scene.paint.Color;
 
-import java.security.Key;
+import java.lang.reflect.Field;
 import java.util.*;
 
-/**
- * Created by fuve on 01/04/2017.
- */
 public class GameImpl implements Game {
     private boolean running;
     private Map<Player, Direction> playerMap;
@@ -19,6 +16,35 @@ public class GameImpl implements Game {
         running = false;
         playerMap = new HashMap<>();
         this.canvas = canvas;
+    }
+
+    public Map<String, Color> getAvailableColors() {
+        Map<String, Color> map = new HashMap<>();
+
+        for (Field f : Color.class.getFields())
+            try {
+                Object obj = f.get(null);
+                if (obj instanceof Color) map.put(f.getName(), (Color) obj);
+            } catch (IllegalAccessException ignored) {
+            }
+
+        List<String> usedColors = new ArrayList<>();
+        for (Player player : getPlayers()) {
+            for (Map.Entry<String, Color> entry : map.entrySet()) {
+                if (entry.getValue().equals(player.getColor())) usedColors.add(entry.getKey());
+            }
+        }
+        for (String s : usedColors) map.remove(s);
+
+        return map;
+    }
+
+    @Override
+    public Color getAvailableColor() {
+        Map<String, Color> colorMap = getAvailableColors();
+        List<String> keys = new ArrayList<>(colorMap.keySet());
+        String randomColor = keys.get(new Random().nextInt(keys.size()));
+        return colorMap.get(randomColor);
     }
 
     @Override
@@ -42,8 +68,7 @@ public class GameImpl implements Game {
             previous = current;
             lag += elapsed;
 
-            while (lag >= GameConstants.MS_PER_UPDATE)
-            {
+            while (lag >= GameConstants.MS_PER_UPDATE) {
                 update();
                 lag -= GameConstants.MS_PER_UPDATE;
             }
@@ -96,13 +121,8 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public Color getAvailableColor() {
-        return null;
-    }
-
-    @Override
     public Player getPlayer(String name) {
-        for (Player p : playerMap.keySet()){
+        for (Player p : playerMap.keySet()) {
             if (p.getName().equals(name)) return p;
         }
         return null;
@@ -124,13 +144,17 @@ public class GameImpl implements Game {
             y = r.nextInt(GameConstants.GAME_WIDTH - 2*GameConstants.MIN_INITIAL_DIST) + GameConstants.MIN_INITIAL_DIST;
         }
 
-        return new PositionImpl(x,y);
+        return new PositionImpl(x, y);
     }
 
     private boolean checkPosition(int x, int y) {
         for (Position p : getPositions()) {
-            if (Math.abs(p.getX() - x) < GameConstants.MIN_INITIAL_DIST) { return false; }
-            if (Math.abs(p.getY() - y) < GameConstants.MIN_INITIAL_DIST) { return false; }
+            if (Math.abs(p.getX() - x) < GameConstants.MIN_INITIAL_DIST) {
+                return false;
+            }
+            if (Math.abs(p.getY() - y) < GameConstants.MIN_INITIAL_DIST) {
+                return false;
+            }
         }
         return true;
     }
