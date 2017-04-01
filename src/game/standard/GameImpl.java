@@ -21,7 +21,6 @@ public class GameImpl implements Game, Runnable {
         playerMap = new HashMap<>();
         pathMap = new HashMap<>();
         this.factory = factory;
-
         canvas = factory.createCanvas();
     }
 

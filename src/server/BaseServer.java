@@ -1,10 +1,6 @@
 package server;
 
-
 import game.framework.Game;
-import game.standard.GameImpl;
-import javafx.scene.input.KeyCode;
-import server.Stubs.ActionPerformerStub;
 
 import java.io.IOException;
 import java.net.*;
@@ -17,7 +13,7 @@ import java.util.HashMap;
 public class BaseServer {
 
     //specify the port of the server
-    private int portNumber = 40499;
+    private int portNumber = 80;
     private ServerSocket serverSocket;
     private boolean running;
     private ActionPerformer actionPerformer;
@@ -38,12 +34,12 @@ public class BaseServer {
             while (running) {
                 //Main thread is waiting for clients
                 Socket socket = waitForConnectionFromClient();
-                WebsocketHandler handler = new WebsocketHandler(socket);
+                WebSocketHandler handler = new WebSocketHandler(socket);
                 if (handler.handshake()) {
                     Thread t = new Thread(() -> {
                         try {
                             String s;
-                            while ((s = handler.receiveMessage())!= null) {
+                            while ((s = handler.receiveMessage()) != null) {
                                 actionPerformer.perform(s, game, game.getPlayer(socketPlayerHashMap.get(socket)));
                             }
                             System.out.println("End of stream");
@@ -72,6 +68,7 @@ public class BaseServer {
             String playerName = String.valueOf(game.getPlayerMap().size());
             game.addPlayer(playerName, game.getAvailableColor());
             socketPlayerHashMap.put(res, playerName);
+            System.out.println("Players connected: " + game.getPlayerMap().size());
         } catch (IOException e) {
             System.out.println("The client has failed to connect, when server tried to accept the socket");
         }
@@ -81,7 +78,6 @@ public class BaseServer {
     protected void registerOnPort() {
         try {
             serverSocket = new ServerSocket(portNumber);
-//            serverSocket.bind(new InetSocketAddress(new InetAddress(),portNumber));
         } catch (IOException e) {
             serverSocket = null;
             System.err.println("Cannot open server socket on port number" + portNumber);

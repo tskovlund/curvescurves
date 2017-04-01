@@ -36,8 +36,8 @@ public class GameConstants {
     ////
     //    GAME SIZE CONSTANTS
     ////
-    public static int GAME_WIDTH;
-    public static int GAME_HEIGHT;
+    public static int GAME_WIDTH=1000;
+    public static int GAME_HEIGHT=400;
 
     public static int WIDTH_MINUS_SCOREBOARD() {
         return GAME_WIDTH - SCORE_OFFSET_TO_LEFT;

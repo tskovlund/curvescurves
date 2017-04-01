@@ -12,9 +12,7 @@ import server.ServerToGameAdapter;
 
 import java.util.Scanner;
 
-/**
- * Created by fuve on 01/04/2017.
- */
+
 public class Driver {
     public static void main(String[] args) {
         Game game = new GameImpl(new CurvesCurvesFactory() {
@@ -37,8 +35,14 @@ public class Driver {
         BaseServer server = new BaseServer(new ServerToGameAdapter(), game);
         server.start();
 
-        Scanner s = new Scanner(System.in);
-        System.out.println(s.next());
+        while (game.getPlayerMap().size() <= 3) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("LET THE GAMES BEGIN");
         game.start();
     }
 }

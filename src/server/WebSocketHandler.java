@@ -11,12 +11,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import sun.misc.BASE64Encoder;
 
-public class WebsocketHandler {
+public class WebSocketHandler {
 
     public static final int MASK_SIZE = 4;
     private Socket socket;
 
-    public WebsocketHandler(Socket socket) {
+    public WebSocketHandler(Socket socket) {
         this.socket = socket;
     }
 
@@ -29,8 +29,6 @@ public class WebsocketHandler {
         //Reading client handshake
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
-            System.out.println();
-            System.out.println(str);
             if (s.length == 2) {
                 keys.put(s[0], s[1]);
             }
@@ -51,7 +49,6 @@ public class WebsocketHandler {
                 + "Connection: Upgrade\r\n"
                 + "Sec-WebSocket-Accept: " + hash + "\r\n"
                 + "\r\n";
-        System.out.println(outString);
         //Write handshake response
         out.write(outString);
         out.flush();
