@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -91,9 +92,12 @@ public class CanvasImpl extends Application implements Canvas {
         primaryStage.show();
 
         GameImpl game = new GameImpl(this);
-        Controller c = game.addPlayer("SlowBro", Color.RED);
+        Controller c = game.addPlayer("SlowBro", Color.RED, KeyCode.LEFT, KeyCode.RIGHT);
+        Controller c1 = game.addPlayer("BroSlow", Color.BLUE, KeyCode.A, KeyCode.D);
         canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyController) c);
         canvas.addEventHandler(KeyEvent.KEY_RELEASED, (KeyController) c);
+        canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyController) c1);
+        canvas.addEventHandler(KeyEvent.KEY_RELEASED, (KeyController) c1);
         canvas.setFocusTraversable(true);
         Thread t = new Thread(game);
         t.start();

@@ -2,6 +2,7 @@ package game.standard;
 
 import game.framework.*;
 import game.local.KeyController;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 import java.lang.reflect.Field;
@@ -145,12 +146,12 @@ public class GameImpl implements Game, Runnable {
     }
 
     @Override
-    public Controller addPlayer(String name, Color color) {
+    public Controller addPlayer(String name, Color color, KeyCode left, KeyCode right) {
         Position p = newPlayerPosition();
         addToPath(p, System.nanoTime());
         Player player = new PlayerImpl(name, 0, p, color, randomAngle());
         playerMap.put(player, Direction.FORWARD);
-        return new KeyController(this, player);
+        return new KeyController(this, player, left, right);
     }
 
     private void addToPath(Position p, Long timeStamp) {

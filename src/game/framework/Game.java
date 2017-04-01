@@ -1,5 +1,6 @@
 package game.framework;
 
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 import java.util.Map;
@@ -12,7 +13,7 @@ public interface Game {
     void stop();
     void mainLoop();
     void setPlayerDirection(Direction d, Player player);
-    Controller addPlayer(String name, Color color);
+    Controller addPlayer(String name, Color color, KeyCode left, KeyCode right);
     Color getAvailableColor();
     Player getPlayer(String name);
     Map<Player,Direction> getPlayerMap();

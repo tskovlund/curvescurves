@@ -21,9 +21,14 @@ public class KeyController implements Controller, EventHandler<KeyEvent> {
     private boolean left;
     private boolean right;
 
-    public KeyController(Game g, Player p) {
+    private final KeyCode leftKey;
+    private final KeyCode rightKey;
+
+    public KeyController(Game g, Player p, KeyCode left, KeyCode right) {
         game = g;
         player = p;
+        leftKey = left;
+        rightKey = right;
     }
 
     @Override
@@ -34,9 +39,10 @@ public class KeyController implements Controller, EventHandler<KeyEvent> {
     private void keyPressed(KeyEvent e) {
         KeyCode code = e.getCode();
 
-        switch (code) {
-            case LEFT: left = true; break;
-            case RIGHT: right = true; break;
+        if (code.equals(leftKey)) {
+            left = true;
+        } else if (code.equals(rightKey)) {
+            right = true;
         }
 
         updateDirection();
@@ -45,9 +51,10 @@ public class KeyController implements Controller, EventHandler<KeyEvent> {
     private void keyReleased(KeyEvent e) {
         KeyCode code = e.getCode();
 
-        switch (code) {
-            case LEFT: left = false; break;
-            case RIGHT: right = false; break;
+        if (code.equals(leftKey)) {
+            left = false;
+        } else if (code.equals(rightKey)) {
+            right = false;
         }
 
         updateDirection();

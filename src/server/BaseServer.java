@@ -3,12 +3,10 @@ package server;
 
 import game.framework.Game;
 import game.standard.GameImpl;
+import javafx.scene.input.KeyCode;
 import server.Stubs.ActionPerformerStub;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.*;
 import java.util.HashMap;
 
@@ -72,7 +70,7 @@ public class BaseServer {
         try {
             res = serverSocket.accept();
             String playerName = String.valueOf(game.getPlayerMap().size());
-            game.addPlayer(playerName, game.getAvailableColor());
+            game.addPlayer(playerName, game.getAvailableColor(), KeyCode.LEFT, KeyCode.RIGHT);
             socketPlayerHashMap.put(res, playerName);
         } catch (IOException e) {
             System.out.println("The client has failed to connect, when server tried to accept the socket");
