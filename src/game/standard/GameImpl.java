@@ -138,12 +138,12 @@ public class GameImpl implements Game, Runnable {
     private Position newPlayerPosition() {
         Random r = new Random();
 
-        int x = r.nextInt(GameConstants.GAME_HEIGHT - 2*GameConstants.MIN_INITIAL_DIST) + GameConstants.MIN_INITIAL_DIST;
-        int y = r.nextInt(GameConstants.GAME_WIDTH - 2*GameConstants.MIN_INITIAL_DIST) + GameConstants.MIN_INITIAL_DIST;
+        int x = r.nextInt(GameConstants.GAME_HEIGHT - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
+        int y = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD() - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
 
         while (!checkPosition(x,y)) {
-            x = r.nextInt(GameConstants.GAME_HEIGHT - 2*GameConstants.MIN_INITIAL_DIST) + GameConstants.MIN_INITIAL_DIST;
-            y = r.nextInt(GameConstants.GAME_WIDTH - 2*GameConstants.MIN_INITIAL_DIST) + GameConstants.MIN_INITIAL_DIST;
+            x = r.nextInt(GameConstants.GAME_HEIGHT - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
+            y = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD() - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
         }
 
         return new PositionImpl(x, y);
@@ -151,10 +151,10 @@ public class GameImpl implements Game, Runnable {
 
     private boolean checkPosition(int x, int y) {
         for (Position p : getPositions()) {
-            if (Math.abs(p.getX() - x) < GameConstants.MIN_INITIAL_DIST) {
+            if (Math.abs(p.getX() - x) < GameConstants.MIN_INITIAL_PLAYER_DIST) {
                 return false;
             }
-            if (Math.abs(p.getY() - y) < GameConstants.MIN_INITIAL_DIST) {
+            if (Math.abs(p.getY() - y) < GameConstants.MIN_INITIAL_PLAYER_DIST) {
                 return false;
             }
         }
