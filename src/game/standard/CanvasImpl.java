@@ -23,8 +23,8 @@ import static game.framework.GameConstants.*;
  * Made by Rasmus on 31/03/2017.
  */
 public class CanvasImpl extends Application implements Canvas {
-    public static final CountDownLatch latch = new CountDownLatch(1);
-    public static CanvasImpl canvasImpl = null;
+    private static final CountDownLatch latch = new CountDownLatch(1);
+    private static CanvasImpl canvasImpl = null;
     private GraphicsContext gc;
 
     public CanvasImpl() {
@@ -40,7 +40,7 @@ public class CanvasImpl extends Application implements Canvas {
         return canvasImpl;
     }
 
-    public static void setCanvasImpl(CanvasImpl canvasImpl0) {
+    private static void setCanvasImpl(CanvasImpl canvasImpl0) {
         canvasImpl = canvasImpl0;
         latch.countDown();
     }
@@ -50,23 +50,14 @@ public class CanvasImpl extends Application implements Canvas {
     }
 
     @Override
-    public void update(GameImpl game) {
+    public void update(List<Player> players) {
         if (gc == null) return;
-        drawPlayers(new ArrayList<>(game.getPlayerMap().keySet()));
-        drawScores(new ArrayList<>(game.getPlayerMap().keySet()));
+        drawPlayers(players);
+        drawScores(players);
     }
 
     private void drawPlayers(List<Player> players) {
-        Position p1 = players.get(0).getPosition();
-        Position p2 = players.get(1).getPosition();
-        Position p3 = players.get(2).getPosition();
-
-        System.out.println(players.get(0).isAlive() + "" + players.get(1).isAlive() + "" + players.get(2).isAlive());
-
-        System.out.println(p1 + " " + p2 + " " + p3);
-
         for (Player player : players) {
-            System.out.println("Drawing");
             gc.setFill(player.getColor());
             Position position = player.getPosition();
             gc.fillOval(position.getX(), position.getY(), PLAYER_DOT_DIAMETER, PLAYER_DOT_DIAMETER);
@@ -176,7 +167,7 @@ public class CanvasImpl extends Application implements Canvas {
                 players.add(new PlayerImpl("Player 3", i + random.nextInt(5), pos3, Color.RED, 0));
                 players.add(new PlayerImpl("Player 4", i + random.nextInt(5), pos4, Color.PURPLE, 0));
 
-//                update(players);
+                update(players);
 
                 pos1 = new PositionImpl(pos1.getX() + random.nextInt(2), pos1.getY() + random.nextInt(2));
                 pos2 = new PositionImpl(pos2.getX() + random.nextInt(2), pos2.getY() + random.nextInt(2));
@@ -188,10 +179,5 @@ public class CanvasImpl extends Application implements Canvas {
         });
         primaryStage.setOnCloseRequest(event -> testThread.interrupt());
         testThread.start();
-
-    }
-
-    public void printSomething() {
-        System.out.println("You called a method on the application");
     }
 }

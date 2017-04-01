@@ -2,7 +2,6 @@ package game.standard;
 
 import game.framework.*;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.paint.Color;
 
 import java.lang.reflect.Field;
@@ -65,7 +64,6 @@ public class GameImpl implements Game {
 
         new Thread(() -> Application.launch(CanvasImpl.class)).start();
         canvas = CanvasImpl.waitForStartUpTest();
-        canvas.printSomething();
 
         running = true;
         render();
@@ -89,6 +87,7 @@ public class GameImpl implements Game {
 
             while (lag >= GameConstants.MS_PER_UPDATE) {
                 update();
+                render();
                 lag -= GameConstants.MS_PER_UPDATE;
             }
 
@@ -98,7 +97,6 @@ public class GameImpl implements Game {
                 e.printStackTrace();
             }
 
-            render();
         }
     }
 
@@ -153,7 +151,7 @@ public class GameImpl implements Game {
     }
 
     private void render() {
-        canvas.update(this);
+        canvas.update(getPlayers());
 //        Platform.runLater(() -> canvas.update(this));
     }
 
@@ -242,7 +240,8 @@ public class GameImpl implements Game {
         return positions;
     }
 
-    private List<Player> getPlayers() {
+    @Override
+    public List<Player> getPlayers() {
         return new ArrayList<>(playerMap.keySet());
     }
 

@@ -2,6 +2,7 @@ package game.framework;
 
 import javafx.scene.paint.Color;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,5 +21,6 @@ public interface Game extends Runnable {
     Controller addPlayer(String name, Color color);
 
     Player getPlayer(String name);
+    List<Player> getPlayers();
     Map<Player,Direction> getPlayerMap();
 }
