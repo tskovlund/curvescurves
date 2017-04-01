@@ -161,13 +161,13 @@ public class GameImpl implements Game, Runnable {
             if (pathMap.get(x).containsKey(y)) {
                 pathMap.get(x).get(y).add(timeStamp);
             } else {
-                Set<Long> set = new TreeSet<>();
+                Set<Long> set = new HashSet<>();
                 set.add(System.nanoTime());
                 pathMap.get(x).put(y, set);
             }
         } else {
-            Map<Integer, Set<Long>> map = new TreeMap<>();
-            Set<Long> set = new TreeSet<>();
+            Map<Integer, Set<Long>> map = new HashMap<>();
+            Set<Long> set = new HashSet<>();
             set.add(timeStamp);
             map.put(y, set);
             pathMap.put(x, map);
