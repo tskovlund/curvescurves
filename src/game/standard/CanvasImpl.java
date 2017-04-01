@@ -98,6 +98,7 @@ public class CanvasImpl extends Application implements Canvas {
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             int yCoordinate = SCORE_OFFSET_TO_TOP + (i * SCORE_LINE_HEIGHT);
+            gc.setFill(player.getColor());
             gc.fillText(player.getName(), GAME_WIDTH - SCORE_OFFSET_TO_LEFT + 10, yCoordinate, SCORE_SPACE_FOR_PLAYER_NAME);
             gc.fillText("" + player.getScore(), GAME_WIDTH - SCORE_OFFSET_TO_LEFT + 10 + SCORE_SPACE_FOR_PLAYER_NAME, yCoordinate, NAME_MAX_WIDTH);
         }
