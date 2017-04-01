@@ -1,4 +1,4 @@
-package game.local;
+package game.standard;
 
 import game.framework.Canvas;
 import game.framework.GameState;
