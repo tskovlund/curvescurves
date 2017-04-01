@@ -15,7 +15,7 @@ window.onload = function () {
 	rightButton = document.getElementById("right");
 	setUpListeners();
     });
-}
+};
 
 var socket;
 var leftButton;

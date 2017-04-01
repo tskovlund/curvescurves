@@ -2,15 +2,12 @@ package driver;
 
 import game.framework.*;
 import game.local.KeyController;
-import game.standard.CanvasImpl;
 import game.standard.GameImpl;
 import game.standard.PlayerImpl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import server.BaseServer;
 import server.ServerToGameAdapter;
-
-import java.util.Scanner;
 
 
 public class Driver {
@@ -40,6 +37,5 @@ public class Driver {
         System.out.println("LET THE GAMES BEGIN");
 
         game.start();
-
     }
 }
