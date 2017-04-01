@@ -64,10 +64,10 @@ public class GameImpl implements Game, Runnable {
 
     @Override
     public void mainLoop() {
-        double previous = System.nanoTime()/1000000;
+        double previous = System.nanoTime() / 1000000;
         double lag = 0.0;
         while (running) {
-            double current = System.nanoTime()/1000000;
+            double current = System.nanoTime() / 1000000;
             double elapsed = current - previous;
             previous = current;
             lag += elapsed;
@@ -116,13 +116,21 @@ public class GameImpl implements Game, Runnable {
     private boolean isLegalPosition(Position p, Long timeStamp) {
         int x = (int) p.getX();
         int y = (int) p.getY();
-        //TODO: Do for x, y +- 1
-        if (!pathMap.containsKey(x)) return true;
-        Map<Integer, Set<Long>> map = pathMap.get(x);
-        if (!map.containsKey(y)) return true;
-        Set<Long> set = map.get(y);
-        for (Long stamp : set) {
-            if (Math.abs(timeStamp - stamp) > GameConstants.MIN_DELTA_TIMESTAMP_NANOSECS) { return false; }
+
+        for (int i = x - 1; i <= x + 1; i++) {
+            if (pathMap.containsKey(i)) {
+                Map<Integer, Set<Long>> yMap = pathMap.get(i);
+                for (int j = y - 1; j <= y + 1; j++) {
+                    if (yMap.containsKey(j)) {
+                        Set<Long> set = yMap.get(j);
+                        for (Long stamp : set) {
+                            if (Math.abs(timeStamp - stamp) > GameConstants.MIN_DELTA_TIMESTAMP_NANOSECS) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
         }
         return true;
     }
@@ -160,7 +168,7 @@ public class GameImpl implements Game, Runnable {
             Map<Integer, Set<Long>> map = new TreeMap<>();
             Set<Long> set = new TreeSet<>();
             set.add(timeStamp);
-            map.put(y,set);
+            map.put(y, set);
             pathMap.put(x, map);
         }
     }
@@ -185,16 +193,15 @@ public class GameImpl implements Game, Runnable {
     private Position newPlayerPosition() {
         Random r = new Random();
 
-        int x = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD()  - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
-        int y = r.nextInt(GameConstants.GAME_HEIGHT - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
+        int x = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD() - 2 * GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
+        int y = r.nextInt(GameConstants.GAME_HEIGHT - 2 * GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
 
-        while (!checkInitialPosition(x,y)) {
-            x = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD() - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
-            y = r.nextInt(GameConstants.GAME_HEIGHT - 2*GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
+        while (!checkInitialPosition(x, y)) {
+            x = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD() - 2 * GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
+            y = r.nextInt(GameConstants.GAME_HEIGHT - 2 * GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
         }
 
-        Position p = new PositionImpl(x, y);
-        return p;
+        return new PositionImpl(x, y);
     }
 
     private boolean checkInitialPosition(int x, int y) {
