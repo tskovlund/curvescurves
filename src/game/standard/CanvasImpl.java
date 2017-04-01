@@ -1,16 +1,12 @@
 package game.standard;
 
 import game.framework.Canvas;
-import game.framework.Controller;
 import game.framework.Player;
 import game.framework.Position;
-import game.local.KeyController;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;

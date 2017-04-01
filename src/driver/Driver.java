@@ -43,6 +43,7 @@ public class Driver {
             }
         }
         System.out.println("LET THE GAMES BEGIN");
-        game.start();
+        Thread t = new Thread(game);
+        t.start();
     }
 }

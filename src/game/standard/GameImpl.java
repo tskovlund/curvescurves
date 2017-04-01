@@ -2,6 +2,7 @@ package game.standard;
 
 import game.framework.*;
 import game.local.KeyController;
+import javafx.application.Application;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
@@ -9,7 +10,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GameImpl implements Game, Runnable {
+public class GameImpl implements Game {
     private final CurvesCurvesFactory factory;
     private boolean running;
     private Map<Player, Direction> playerMap;
@@ -56,6 +57,7 @@ public class GameImpl implements Game, Runnable {
 
     @Override
     public void start() {
+        new Thread(() -> Application.launch(CanvasImpl.class)).start();
         running = true;
         render();
         mainLoop();

@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by fuve on 31/03/2017.
  */
-public interface Game {
+public interface Game extends Runnable {
     void start();
     void stop();
     void mainLoop();
