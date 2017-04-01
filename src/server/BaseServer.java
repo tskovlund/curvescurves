@@ -2,9 +2,7 @@ package server;
 
 
 import game.framework.Game;
-import game.framework.Player;
 import game.standard.GameImpl;
-import game.standard.PlayerImpl;
 import server.Stubs.ActionPerformerStub;
 
 import java.io.BufferedReader;
@@ -38,7 +36,7 @@ public class BaseServer {
     private void start() {
         try {
             registerOnPort();
-
+            printLocalHostAddress();
             while (running) {
                 //Main thread is waiting for clients
                 Socket socket = waitForConnectionFromClient();
@@ -95,12 +93,23 @@ public class BaseServer {
     }
 
     public static void main(String[] args) {
-
-        BaseServer baseServer = new BaseServer(new ActionPerformerStub(), new GameImpl(null));
+        BaseServer baseServer = new BaseServer(new ServerToGameAdapter(), new GameImpl(null));
         baseServer.start();
     }
 
     public Game getGame() {
         return game;
+    }
+
+    protected void printLocalHostAddress() {
+        try {
+            InetAddress localhost = InetAddress.getLocalHost();
+            String localhostAddress = localhost.getHostAddress();
+            System.out.println("Contact this server on the IP address " + localhostAddress);
+        } catch (UnknownHostException e) {
+            System.err.println("Cannot resolve the Internet address of the local host.");
+            System.err.println(e);
+            System.exit(-1);
+        }
     }
 }
