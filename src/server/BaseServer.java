@@ -1,11 +1,17 @@
 package server;
 
 
+import game.framework.Game;
+import game.framework.Player;
+import game.standard.GameImpl;
+import server.Stubs.ActionPerformerStub;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 
 /**
  * The function of this class is to form a basic server.
@@ -17,13 +23,17 @@ public class BaseServer {
     private int portNumber = 40499;
     private ServerSocket serverSocket;
     private boolean running;
+    private ActionPerformer actionPerformer;
+    private Game game;
+    private HashMap<Socket,Player> socketPlayerHashMap;
 
-    public BaseServer() {
+    public BaseServer(ActionPerformer actionPerformer, GameImpl game) {
+        this.actionPerformer = actionPerformer;
+        this.game = game;
         this.running = true;
+        socketPlayerHashMap = new HashMap<>();
     }
 
-
-    //TODO listen for new clients
     private void start() {
         registerOnPort();
 
@@ -36,11 +46,14 @@ public class BaseServer {
                     BufferedReader fromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String s;
                     while ((s = fromClient.readLine()) != null) {
-                        System.out.println("From client" + s);
+                        //TODO perform action on game with Player
+                        actionPerformer.perform(s,game,null);
                     }
                     System.out.println("End of stream");
                 } catch (IOException e) {
                     System.out.println("Something is wrong");
+                    e.printStackTrace();
+                } catch (ReflectiveOperationException e) {
                     e.printStackTrace();
                 }
             });
@@ -52,12 +65,12 @@ public class BaseServer {
         Socket res = null;
         try {
             res = serverSocket.accept();
+            game.addPlayer(String.valueOf(game.getPlayerMap().size()+1),null);
         } catch (IOException e) {
             System.out.println("The client has failed to connect, when server tried to accept the socket");
         }
         return res;
     }
-
 
     protected void registerOnPort() {
         try {
@@ -71,7 +84,11 @@ public class BaseServer {
     }
 
     public static void main(String[] args) {
-        BaseServer baseServer = new BaseServer();
+        BaseServer baseServer = new BaseServer(new ActionPerformerStub(),new GameImpl(null));
         baseServer.start();
+    }
+
+    public Game getGame() {
+        return game;
     }
 }
