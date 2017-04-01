@@ -9,7 +9,7 @@ public class GameConstants {
     public static final int PLAYER_DOT_DIAMETER = 10;
     public static final int GAME_WIDTH = 1200;
     public static final int GAME_HEIGHT = 750;
-    public static final Color BACKGROUND_COLOR = Color.GRAY;
+    public static final Color BACKGROUND_COLOR = Color.LIGHTSALMON;
 
     ////
     //    SCORE BOARD CONSTANTS
