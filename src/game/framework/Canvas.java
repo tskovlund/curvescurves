@@ -7,5 +7,4 @@ import java.util.List;
  */
 public interface Canvas {
     void update(List<Player> players);
-    javafx.scene.canvas.Canvas getCanvas();
 }

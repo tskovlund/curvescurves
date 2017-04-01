@@ -34,11 +34,6 @@ public class CanvasImpl extends Application implements Canvas {
         drawScores(players);
     }
 
-    @Override
-    public javafx.scene.canvas.Canvas getCanvas() {
-        return null;
-    }
-
     private void drawPlayers(List<Player> players) {
         for (Player player : players) {
             gc.setFill(player.getColor());
@@ -48,28 +43,41 @@ public class CanvasImpl extends Application implements Canvas {
     }
 
     private void drawScores(List<Player> players) {
+        clearScoreBoardArea();
+        setupScoreBoardBackground();
+        drawScoreBoard(players);
+    }
+
+    private void clearScoreBoardArea() {
+        // Draw background
         gc.setFill(SCORE_BACKGROUND_COLOR);
-        gc.fillRect(GAME_WIDTH - SCORE_OFFSET_TO_LEFT, 0, SCORE_OFFSET_TO_LEFT, GAME_HEIGHT);
+        gc.fillRect(WIDTH_MINUS_SCOREBOARD(), 0, SCORE_OFFSET_TO_LEFT, GAME_HEIGHT);
 
-
+        // Draw line seperating scoreboard and game
         gc.setFill(Color.BLACK);
         gc.setLineWidth(2);
-        gc.strokeLine(GAME_WIDTH-SCORE_OFFSET_TO_LEFT, 0, GAME_WIDTH-SCORE_OFFSET_TO_LEFT, GAME_HEIGHT);
+        gc.strokeLine(WIDTH_MINUS_SCOREBOARD(), 0, WIDTH_MINUS_SCOREBOARD(), GAME_HEIGHT);
+    }
 
-        int xCoordinate = GAME_WIDTH - SCORE_OFFSET_TO_LEFT + 10;
+    private void setupScoreBoardBackground() {
+        // Draw title
         Font oldFont = gc.getFont();
         gc.setFont(new Font("Verdana", 25));
-        gc.fillText("SCOREBOARD", xCoordinate, SCORE_OFFSET_TO_TOP - 55);
+        gc.fillText("SCOREBOARD", GAME_WIDTH - SCORE_OFFSET_TO_LEFT + 10, SCOREBOARD_TITLE_Y_POS);
         gc.setFont(oldFont);
 
-        gc.fillText("Name:", xCoordinate, SCORE_OFFSET_TO_TOP - SCORE_LINE_HEIGHT, SCORE_SPACE_FOR_PLAYER_NAME);
-        gc.fillText("Score:", xCoordinate + SCORE_SPACE_FOR_PLAYER_NAME, SCORE_OFFSET_TO_TOP - SCORE_LINE_HEIGHT, SCORE_SPACE_FOR_PLAYER_NAME);
+        // Draw headers
+        gc.fillText("Name:", GAME_WIDTH - SCORE_OFFSET_TO_LEFT + 10, SCOREBOARD_HEADERS_Y_POS, SCORE_SPACE_FOR_PLAYER_NAME);
+        gc.fillText("Score:", GAME_WIDTH - SCORE_OFFSET_TO_LEFT + 10 + SCORE_SPACE_FOR_PLAYER_NAME, SCOREBOARD_HEADERS_Y_POS, SCORE_SPACE_FOR_PLAYER_NAME);
+    }
 
+    private void drawScoreBoard(List<Player> players) {
+        // Draw name and score for each player
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             int yCoordinate = SCORE_OFFSET_TO_TOP + (i * SCORE_LINE_HEIGHT);
-            gc.fillText(player.getName(), xCoordinate, yCoordinate, SCORE_SPACE_FOR_PLAYER_NAME);
-            gc.fillText("" + player.getScore(), xCoordinate + SCORE_SPACE_FOR_PLAYER_NAME, yCoordinate, SCORE_OFFSET_TO_LEFT - SCORE_SPACE_FOR_PLAYER_NAME);
+            gc.fillText(player.getName(), GAME_WIDTH - SCORE_OFFSET_TO_LEFT + 10, yCoordinate, SCORE_SPACE_FOR_PLAYER_NAME);
+            gc.fillText("" + player.getScore(), GAME_WIDTH - SCORE_OFFSET_TO_LEFT + 10 + SCORE_SPACE_FOR_PLAYER_NAME, yCoordinate, NAME_MAX_WIDTH);
         }
     }
 
