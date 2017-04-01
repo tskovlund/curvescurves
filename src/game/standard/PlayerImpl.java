@@ -55,5 +55,6 @@ public class PlayerImpl implements Player {
     @Override
     public void turn(int degrees) {
         angle = (angle + degrees) % 360;
+        if (angle == -1) angle = 359;
     }
 }

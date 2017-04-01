@@ -99,10 +99,10 @@ public class GameImpl implements Game, Runnable {
             p.updatePosition(deltaX, deltaY);
 
             if (playerMap.get(p) == Direction.LEFT) {
-                p.turn(-GameConstants.TURN_SPEED);
+                p.turn(GameConstants.TURN_SPEED);
             }
             if (playerMap.get(p) == Direction.RIGHT) {
-                p.turn(GameConstants.TURN_SPEED);
+                p.turn(-GameConstants.TURN_SPEED);
             }
         }
     }
