@@ -1,6 +1,5 @@
 package server;
 
-
 import game.framework.Direction;
 import game.framework.Game;
 import game.framework.Player;

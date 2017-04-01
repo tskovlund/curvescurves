@@ -1,9 +1,7 @@
 package game.standard;
 
 import game.framework.*;
-import game.local.KeyController;
 import javafx.application.Application;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 import java.lang.reflect.Field;

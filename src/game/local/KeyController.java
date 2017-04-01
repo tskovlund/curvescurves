@@ -8,9 +8,6 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import java.awt.*;
-import java.awt.event.KeyListener;
-
 /**
  * Created by fuve on 01/04/2017.
  */
