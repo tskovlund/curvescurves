@@ -35,7 +35,7 @@ public class KeyController implements Controller, EventHandler<KeyEvent> {
         KeyCode code = e.getCode();
 
         switch (code) {
-            case LEFT: left = true;
+            case LEFT: left = true; break;
             case RIGHT: right = true; break;
         }
 
@@ -46,7 +46,7 @@ public class KeyController implements Controller, EventHandler<KeyEvent> {
         KeyCode code = e.getCode();
 
         switch (code) {
-            case LEFT: left = false;
+            case LEFT: left = false; break;
             case RIGHT: right = false; break;
         }
 

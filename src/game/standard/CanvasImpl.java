@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -77,6 +78,7 @@ public class CanvasImpl extends Application implements Canvas {
         Controller c = game.addPlayer("SlowBro", Color.RED);
         canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyController) c);
         canvas.addEventHandler(KeyEvent.KEY_RELEASED, (KeyController) c);
+        canvas.setFocusTraversable(true);
         Thread t = new Thread(game);
         t.start();
         //testMethod(primaryStage);
