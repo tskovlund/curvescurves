@@ -1,18 +1,22 @@
 package game.standard;
 
-import game.framework.Direction;
-import game.framework.Game;
-import game.framework.GameConstants;
-import game.framework.Player;
+import game.framework.*;
+import javafx.scene.paint.Color;
+
+import java.util.*;
 
 /**
  * Created by fuve on 01/04/2017.
  */
 public class GameImpl implements Game {
     private boolean running;
+    private Map<Player, Direction> playerMap;
+    private Canvas canvas;
 
-    public GameImpl() {
+    public GameImpl(Canvas canvas) {
         running = false;
+        playerMap = new HashMap<>();
+        this.canvas = canvas;
     }
 
     @Override
@@ -50,10 +54,40 @@ public class GameImpl implements Game {
     }
 
     private void render() {
+        canvas.update();
     }
 
     @Override
     public void setPlayerDirection(Direction d, Player player) {
+        playerMap.put(player, d);
+    }
 
+    @Override
+    public void addPlayer(String name, Color color) {
+        playerMap.put(new PlayerImpl(name, newPlayerPosition(), color), Direction.FORWARD);
+    }
+
+    private Position newPlayerPosition() {
+        Random r = new Random();
+
+        int x = r.nextInt(GameConstants.GAME_HEIGHT);
+        int y = r.nextInt(GameConstants.GAME_WIDTH);
+
+        while (!checkPlayerPosition()) {
+            x = r.nextInt(GameConstants.GAME_HEIGHT);
+            y = r.nextInt(GameConstants.GAME_WIDTH);
+        }
+
+        return PositionImpl(x,y);
+    }
+
+    private boolean checkPlayerPosition() {
+        for (Position p : getPositions()) {
+
+        }
+    }
+
+    public List<Position> getPositions() {
+        return new ArrayList<>(playerMap.values());
     }
 }
