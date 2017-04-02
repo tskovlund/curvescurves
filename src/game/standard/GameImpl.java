@@ -131,7 +131,8 @@ public class GameImpl implements Game {
         System.out.println(p.getName() + " has died");
         p.setAlive(false);
         incrementScores();
-        if (getAlivePlayers().isEmpty()) {
+        if (getAlivePlayers().size() <= 1) {
+            getAlivePlayers().forEach(Player::incrementScore);
             newRound();
         }
     }
