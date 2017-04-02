@@ -122,9 +122,9 @@ public class GameImpl implements Game {
                 p.turn(GameConstants.TURN_SPEED);
             }
 
-            gapCount++;
-            gapCount %= GameConstants.GAP_MODULO;
         }
+        gapCount++;
+        gapCount %= GameConstants.GAP_MODULO;
     }
 
     private void deadPlayer(Player p) {
@@ -144,7 +144,7 @@ public class GameImpl implements Game {
         awakenPlayersFromTheDead();
         canvas.redrawPlayers(getPlayers());
         try {
-            Thread.sleep(3000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -171,8 +171,11 @@ public class GameImpl implements Game {
     }
 
     private boolean isLegalPosition(Position p, Long timeStamp) {
-        int x = (int) p.getX();
+
         int y = (int) p.getY();
+        int x = (int) p.getX();
+
+        if (x < 0 || y < 0 || x > GameConstants.WIDTH_MINUS_SCOREBOARD() || y > GameConstants.GAME_HEIGHT) return false;
 
         for (int i = x - 1; i <= x + 1; i++) {
             if (pathMap.containsKey(i)) {

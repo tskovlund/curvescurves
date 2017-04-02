@@ -31,7 +31,7 @@ public class GameConstants {
     public static final double TURN_SPEED = 1;
     public static final int MIN_INITIAL_PLAYER_DIST = 50;
     public static final long MIN_DELTA_TIMESTAMP_NANOSECS = 500000000;
-    public static final int GAP_MODULO = 600;
+    public static final int GAP_MODULO = 300;
     public static final int GAP_SIZE = 30;
 
     ////
