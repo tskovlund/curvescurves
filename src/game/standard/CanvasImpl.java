@@ -56,6 +56,15 @@ public class CanvasImpl extends Application implements Canvas {
         drawScores(players);
     }
 
+    @Override
+    public void redrawPlayers(List<Player> players) {
+        gc.setFill(BACKGROUND_COLOR);
+        gc.fillRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+        clearScoreBoardArea();
+        drawScores(players);
+        drawPlayers(players);
+    }
+
     private void drawPlayers(List<Player> players) {
         for (Player player : players) {
             gc.setFill(player.getColor());

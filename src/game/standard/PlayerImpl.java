@@ -45,6 +45,11 @@ public class PlayerImpl implements Player {
     }
 
     @Override
+    public void setPosition(Position p) {
+        position = p;
+    }
+
+    @Override
     public Color getColor() {
         return color;
     }

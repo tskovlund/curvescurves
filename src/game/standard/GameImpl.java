@@ -21,7 +21,7 @@ public class GameImpl implements Game {
         playerMap = new HashMap<>();
         pathMap = new HashMap<>();
         this.factory = factory;
-        gapCount = 0;
+        gapCount = GameConstants.GAP_SIZE + 1;
     }
 
     @Override
@@ -56,9 +56,6 @@ public class GameImpl implements Game {
 
     @Override
     public void start() {
-//        new Thread(() -> Application.launch(CanvasImpl.class)).start();
-//        canvas = CanvasImpl.canvasImpl;
-
         new Thread(() -> Application.launch(CanvasImpl.class)).start();
         canvas = CanvasImpl.waitForStartUpTest();
 
@@ -111,9 +108,9 @@ public class GameImpl implements Game {
             Long timeStamp = System.nanoTime();
 
             if (!isLegalPosition(p.getPosition(), timeStamp)) {
-                System.out.println(p.getName() + " has died");
-                p.setAlive(false);
-                incrementScores();
+                deadPlayer(p);
+                gapCount = GameConstants.GAP_SIZE + 1;
+                return;
             }
 
             if (gapCount > GameConstants.GAP_SIZE) {
@@ -129,6 +126,41 @@ public class GameImpl implements Game {
 
             gapCount++;
             gapCount %= GameConstants.GAP_MODULO;
+        }
+    }
+
+    private void deadPlayer(Player p) {
+        System.out.println(p.getName() + " has died");
+        p.setAlive(false);
+        incrementScores();
+        if (getAlivePlayers().isEmpty()) {
+            newRound();
+        }
+    }
+
+    private void newRound() {
+        pathMap = new HashMap<>();
+        resetPlayerPositions();
+        awakenPlayersFromTheDead();
+        canvas.redrawPlayers(getPlayers());
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void awakenPlayersFromTheDead() {
+        for (Player p : getPlayers()) {
+            p.setAlive(true);
+        }
+    }
+
+    private void resetPlayerPositions() {
+        List<Position> addedPositions = new ArrayList<>();
+        for (Player p : getPlayers()) {
+            p.setPosition(newPlayerPosition(addedPositions));
+            addedPositions.add(p.getPosition());
         }
     }
 
@@ -172,7 +204,7 @@ public class GameImpl implements Game {
 
     @Override
     public void addPlayer(String name, Color color) {
-        Position p = newPlayerPosition();
+        Position p = newPlayerPosition(getPositions());
         Player player = factory.createPlayer(name, p, color, randomAngle());
         playerMap.put(player, Direction.FORWARD);
     }
@@ -214,13 +246,13 @@ public class GameImpl implements Game {
         return playerMap;
     }
 
-    private Position newPlayerPosition() {
+    private Position newPlayerPosition(List<Position> addedPlayerPositions) {
         Random r = new Random();
 
         int x = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD() - 2 * GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
         int y = r.nextInt(GameConstants.GAME_HEIGHT - 2 * GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
 
-        while (!checkInitialPosition(x, y)) {
+        while (!checkInitialPosition(x, y, addedPlayerPositions)) {
             x = r.nextInt(GameConstants.WIDTH_MINUS_SCOREBOARD() - 2 * GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
             y = r.nextInt(GameConstants.GAME_HEIGHT - 2 * GameConstants.MIN_INITIAL_PLAYER_DIST) + GameConstants.MIN_INITIAL_PLAYER_DIST;
         }
@@ -228,8 +260,8 @@ public class GameImpl implements Game {
         return new PositionImpl(x, y);
     }
 
-    private boolean checkInitialPosition(int x, int y) {
-        for (Position p : getPositions()) {
+    private boolean checkInitialPosition(int x, int y, List<Position> addedPlayerPositons) {
+        for (Position p : addedPlayerPositons) {
             if (Math.abs(p.getX() - x) < GameConstants.MIN_INITIAL_PLAYER_DIST) {
                 return false;
             }

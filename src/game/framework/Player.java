@@ -10,6 +10,7 @@ public interface Player {
     int getScore();
     Position getPosition();
     void updatePosition(double deltaX, double deltaY);
+    void setPosition(Position p);
     Color getColor();
     int getAngle();
     void turn(double degrees);

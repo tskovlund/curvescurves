@@ -7,4 +7,6 @@ import java.util.List;
  */
 public interface Canvas {
     void update(List<Player> players);
+
+    void redrawPlayers(List<Player> players);
 }
