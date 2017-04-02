@@ -138,6 +138,7 @@ public class GameImpl implements Game {
     }
 
     private void newRound() {
+        System.out.println("Round finished! New round starting...");
         pathMap = new HashMap<>();
         resetPlayerPositions();
         awakenPlayersFromTheDead();
