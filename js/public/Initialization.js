@@ -1,12 +1,16 @@
 window.onload = function () {
-    let ip = '10.37.0.64';
+    let choice = confirm("go to server A");
+    let ip = '10.37.0.35';    
+    if (choice) {
+	ip = '10.37.0.64';
+    }
     let port = '8080';
 
     socket = new WebSocket('ws://' + ip + ':' + port);
 
     // Listen for messages
     socket.addEventListener('message', function (event) {
-        console.log('Message from server', event.data);
++        console.log('Message from server', event.data);
     });
 
     socket.addEventListener('open', function (event) {

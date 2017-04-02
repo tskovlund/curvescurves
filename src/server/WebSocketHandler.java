@@ -71,7 +71,7 @@ public class WebSocketHandler {
         }
     }
     private byte[] readBytes(int numOfBytes) throws IOException {
-        if (numOfBytes!=0) {
+        if (numOfBytes<0) {
             byte[] b = new byte[numOfBytes];
             socket.getInputStream().read(b);
             return b;

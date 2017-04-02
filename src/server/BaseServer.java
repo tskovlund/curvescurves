@@ -1,8 +1,10 @@
 package server;
 
 import game.framework.Game;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.*;
 import java.util.HashMap;
 
@@ -36,9 +38,14 @@ public class BaseServer {
                 Socket socket = waitForConnectionFromClient();
                 WebSocketHandler handler = new WebSocketHandler(socket);
                 if (handler.handshake()) {
+                    PrintWriter out = new PrintWriter(socket.getOutputStream());
+                    out.write(game.getPlayer(socketPlayerHashMap.get(socket)).getColor().toString());
+                    out.flush();
+
                     Thread t = new Thread(() -> {
                         try {
                             String s;
+
                             while ((s = handler.receiveMessage()) != null) {
                                 actionPerformer.perform(s, game, game.getPlayer(socketPlayerHashMap.get(socket)));
                             }
@@ -66,7 +73,8 @@ public class BaseServer {
         try {
             res = serverSocket.accept();
             String playerName = String.valueOf(game.getPlayerMap().size());
-            game.addPlayer(playerName, game.getAvailableColor());
+            Color color =  game.getAvailableColor();
+            game.addPlayer(playerName, color);
             socketPlayerHashMap.put(res, playerName);
             System.out.println("Players connected: " + game.getPlayerMap().size());
         } catch (IOException e) {
