@@ -10,12 +10,12 @@ public class GameConstants {
     //    GAME CONSTANTS
     ////
     public static final int PLAYER_DOT_DIAMETER = 3;
-    public static final Color BACKGROUND_COLOR = Color.LIGHTSALMON;
+    public static final Color BACKGROUND_COLOR = Color.BLACK;
 
     ////
     //    SCORE BOARD CONSTANTS
     ////
-    public static final Color SCORE_BACKGROUND_COLOR = Color.BISQUE;
+    public static final Color SCORE_BACKGROUND_COLOR = Color.GRAY;
     public static final int SCORE_OFFSET_TO_LEFT = 200;
     public static final int SCORE_OFFSET_TO_TOP = 100;
     public static final int SCORE_LINE_HEIGHT = 20;

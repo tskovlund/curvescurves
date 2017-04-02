@@ -51,7 +51,9 @@ public class GameImpl implements Game {
         Map<String, Color> colorMap = getAvailableColors();
         List<String> keys = new ArrayList<>(colorMap.keySet());
         String randomColor = keys.get(new Random().nextInt(keys.size()));
-        return colorMap.get(randomColor);
+        Color color =colorMap.get(randomColor);
+        if (color.equals(Color.BLACK)) return getAvailableColor();
+        return color;
     }
 
     @Override
