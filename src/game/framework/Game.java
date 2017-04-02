@@ -15,11 +15,9 @@ public interface Game extends Runnable {
     void setPlayerDirection(Direction d, Player player);
 
     Map<String, Color> getAvailableColors();
-
     Color getAvailableColor();
 
     void addPlayer(String name, Color color);
-
     Player getPlayer(String name);
     List<Player> getPlayers();
     Map<Player,Direction> getPlayerMap();
