@@ -81,9 +81,7 @@ public class GameImpl implements Game {
 
             while (lag >= GameConstants.MS_PER_UPDATE) {
                 update();
-                if (gapCount > GameConstants.GAP_SIZE) {
-                    render();
-                }
+                if (gapCount > GameConstants.GAP_SIZE) render();
                 lag -= GameConstants.MS_PER_UPDATE;
             }
 
