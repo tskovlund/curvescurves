@@ -187,6 +187,7 @@ public class GameImpl implements Game {
                         Set<Long> set = yMap.get(j);
                         for (Long stamp : set) {
                             if (Math.abs(timeStamp - stamp) > GameConstants.MIN_DELTA_TIMESTAMP_NANOSECS) {
+                                // TODO: Add check for player. Time stamp is not enough
                                 return false;
                             }
                         }
